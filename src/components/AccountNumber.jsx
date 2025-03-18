@@ -1,6 +1,6 @@
 const AccountNumber = ({accountNumber}) => {
   return (
-    <div class="accno">
+    <div className="accno">
       <p>Account Number</p>
       <h2>{accountNumber}</h2>
     </div>
