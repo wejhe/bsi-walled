@@ -1,18 +1,20 @@
 import { Link, Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import DashboardPage from "./pages/DashboardPage";
+import TopupPage from "./pages/TopupPage";
+import TransferPage from "./pages/TransferPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
     <>
-      {/* <input type="password" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"/>
-      <nav>
-        <Link to="/">Home</Link> | <Link to="/about">About</Link> | <Link to="/login">Login</Link>
-      </nav>
+      <Navbar />
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/about" element={<AboutPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<DashboardPage />} />
+        <Route path="/topup" element={<TopupPage />} />
+        <Route path="/transfer" element={<TransferPage />} />
         <Route path="*" element={<NotFoundPage />} />
-      </Routes> */}
+      </Routes>
     </>
   );
 }

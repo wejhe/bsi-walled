@@ -1,0 +1,156 @@
+* {
+  font-family: "Open Sans";
+  margin: 0;
+  /*border: red 1px solid;*/
+}
+
+body {
+  background-color: #fafbfd;
+  margin: 0;
+}
+
+nav {
+  padding: 0 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 80px;
+  background-color: white;
+}
+
+.menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navlink {
+  margin-right: 40px;
+  text-decoration: none;
+  color: black;
+}
+
+.navlink:hover {
+  color: #0061ff;
+  font-weight: bold;
+}
+
+.clickableicon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.accactionbtn img {
+  height: 64px;
+}
+
+.greetings {
+  padding: 48px 64px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.greet {
+  font-size: 60px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.subgreet {
+  font-size: 24px;
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+}
+
+.profiledata {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 20px;
+  text-align: right;
+}
+
+.profilepicture {
+  margin-left: 24px;
+  border-radius: 100%;
+  border: #0061ff 4px solid;
+  height: 120px;
+  width: 120px;
+  object-fit: cover;
+}
+
+.maininfo {
+  padding: 24px 64px;
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  align-items: center;
+}
+
+.accno {
+  display: flex;
+  flex: 25;
+  flex-direction: column;
+  padding: 40px;
+  background-color: #0061ff;
+  border-radius: 16px;
+  height: 80px;
+  color: white;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+}
+
+.accbalance {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+}
+
+.accinfo {
+  display: flex;
+  flex: 75;
+  padding: 40px;
+  background-color: white;
+  border-radius: 16px;
+  height: 80px;
+  color: black;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 0px 40px rgb(0 0 0 / 0.04);
+}
+
+.accaction {
+  display: flex;
+  gap: 40px;
+}
+
+.accactionbtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.maininfo h2 {
+  font-size: 40px;
+}
+
+.maininfo p {
+  font-size: 20px;
+}
+
+.balanceamount {
+  display: flex;
+  gap: 16px;
+}
