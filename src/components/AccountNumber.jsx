@@ -1,8 +1,8 @@
-const AccountNumber = ({accountNumber}) => {
+const AccountNumber = () => {
   return (
     <div className="accno">
       <p>Account Number</p>
-      <h2>{accountNumber}</h2>
+      <h2>7285467364</h2>
     </div>
   );
 };
