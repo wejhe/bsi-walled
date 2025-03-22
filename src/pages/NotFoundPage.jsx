@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet";
+import BodyLayout from "../layouts/BodyLayout";
 
 const NotFoundPage = () => {
   return (
@@ -6,7 +7,9 @@ const NotFoundPage = () => {
       <Helmet>
         <title>BSI Walled &ndash; Not Found</title>
       </Helmet>
-      <h1>404 : PAGE NOT FOUND</h1>
+      <BodyLayout>
+        <h1>404 : PAGE NOT FOUND</h1>
+      </BodyLayout>
     </>
   );
 };

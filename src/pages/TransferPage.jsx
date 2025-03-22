@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet";
+import BodyLayout from "../layouts/BodyLayout";
 
 const TransferPage = () => {
   return (
@@ -6,7 +7,9 @@ const TransferPage = () => {
       <Helmet>
         <title>BSI Walled &ndash; Transfer</title>
       </Helmet>
-      <h1>TRANSFER PAGE</h1>
+      <BodyLayout>
+        <h1>TRANSFER PAGE</h1>
+      </BodyLayout>
     </>
   );
 };

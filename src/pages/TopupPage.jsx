@@ -1,4 +1,5 @@
 import { Helmet } from "react-helmet";
+import BodyLayout from "../layouts/BodyLayout";
 
 const TopupPage = () => {
   return (
@@ -6,7 +7,9 @@ const TopupPage = () => {
       <Helmet>
         <title>BSI Walled &ndash; Top-Up</title>
       </Helmet>
-      <h1>TOP-UP PAGE</h1>
+      <BodyLayout>
+        <h1>TOP-UP PAGE</h1>
+      </BodyLayout>
     </>
   );
 };
