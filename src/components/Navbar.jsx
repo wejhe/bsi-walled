@@ -10,7 +10,7 @@ const Navbar = () => {
         </a>
         <div className="menu">
           <div>
-            <a className="navlink" href="/">
+            <a className="navlink" href="/dashboard">
               Dashboard
             </a>
             <a className="navlink" href="/topup">
