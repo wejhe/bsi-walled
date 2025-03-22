@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <>
       <nav>
-        <a className="clickableicon" href="/">
+        <a className="clickableicon" href="/dashboard">
           <img src={logo} />
         </a>
         <div className="menu">
@@ -19,7 +19,7 @@ const Navbar = () => {
             <a className="navlink" href="/transfer">
               Transfer
             </a>
-            <a className="navlink" href="#">
+            <a className="navlink" href="/">
               Sign Out
             </a>
           </div>

@@ -184,7 +184,7 @@ nav {
   box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
 }
 
-.loginForm {
+.forms {
   display: flex;
   flex-direction: column;
   justify-content: center;
