@@ -7,6 +7,7 @@
 body {
   background-color: #fafbfd;
   margin: 0;
+  padding-top: 80px;
 }
 
 nav {
@@ -16,6 +17,11 @@ nav {
   align-items: center;
   height: 80px;
   background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
 .menu {
