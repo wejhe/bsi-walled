@@ -11,13 +11,13 @@ const RegisterForm = () => {
       <div className="forms">
         <img className="authLogo" src={logo} />
         <div className="tighterGroup">
-          <InputField type="text" placeholder="Full Name" />
-          <InputField type="text" placeholder="Email" />
-          <InputField type="password" placeholder="Password" />
-          <InputField type="text" placeholder="Phone Number" />
+          <InputField type="text" placeholder="Full Name" width="64%" />
+          <InputField type="text" placeholder="Email" width="64%" />
+          <InputField type="password" placeholder="Password" width="64%" />
+          <InputField type="text" placeholder="Phone Number" width="64%" />
         </div>
         <div className="tighterGroup">
-          <PrimaryButton text="REGISTER" onClick={() => navigate('/dashboard')} />
+          <PrimaryButton text="REGISTER" onClick={() => navigate('/dashboard')} width="calc(64% + 32px)" />
           <p>Already have an account?<a href="/"> Login Now</a></p>
         </div>
       </div>

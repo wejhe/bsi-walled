@@ -174,7 +174,6 @@ nav {
   border: none;
   border-radius: 6px;
   height: 32px;
-  width: 64%;
   padding: 6px 16px 8px 16px;
   font-size: 16px;
 }
@@ -203,7 +202,6 @@ nav {
   color: white;
   font-weight: bold;
   height: 46px;
-  width: calc(64% + 32px);
   font-size: 16px;
 }
 
@@ -228,4 +226,63 @@ nav {
   height: 100vh;
   width: 100%;
   object-fit: cover;
+}
+
+.pageTitle {
+  margin: 40px 0px;
+  text-align: center;
+  font-size: 32px;
+}
+
+.transactionSection {
+  display: flex;
+  justify-content: center;
+}
+
+.transactionInputGroup {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 56px;
+  gap: 32px;
+  width: 40%;
+  background-color: white;
+  border-radius: 16px;
+  color: black;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 0px 40px rgb(0 0 0 / 0.04);
+}
+
+.inputGroupWithSpan {
+  display: flex;
+  width: calc(100% + 32px);
+  gap: 16px;
+}
+
+.inputSpan {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: white;
+  border: none;
+  border-radius: 6px;
+  color: black;
+  font-weight: bold;
+  height: 46px;
+  font-size: 16px;
+}
+
+.balInfo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #0062ff0f;
+  padding: 0px 16px;
+  width: 100%;
+  border: 1px solid #0061FF;
+  border-radius: 6px;
+  color: #0061FF;
+  font-weight: bold;
+  height: 46px;
+  font-size: 16px;
 }
