@@ -3,11 +3,11 @@ const TransactionInputLayout = ({ children }) => {
     <>
       <div className="transactionSection">
         <div className="transactionInputGroup">
-            {{children}}
+            {children}
         </div>
       </div>
     </>
   );
 };
 
-export default GreetingsLayout;
+export default TransactionInputLayout;
