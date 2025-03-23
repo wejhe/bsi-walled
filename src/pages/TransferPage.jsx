@@ -6,6 +6,7 @@ import PrimaryButton from "../components/PrimaryButton";
 import InputSpan from "../components/InputSpan";
 import PageTitle from "../components/PageTitle";
 import BalInfo from "../components/BalInfo";
+import Swal from "sweetalert2";
 
 const TransferPage = () => {
   return (
@@ -41,7 +42,13 @@ const TransferPage = () => {
           </div>
           <PrimaryButton
             text="TRANSFER"
-            onClick={() => navigate("/dashboard")}
+            onClick={() =>
+              Swal.fire({
+                title: "Transfer Success!",
+                text: "Your transfer request has been successfullly processed",
+                icon: "success",
+              })
+            }
             width="calc(100% + 32px)"
           />
         </TransactionInputLayout>

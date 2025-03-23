@@ -7,6 +7,7 @@ import InputSpan from "../components/InputSpan";
 import PageTitle from "../components/PageTitle";
 import BalInfo from "../components/BalInfo";
 import DropDown from "../components/DropDown";
+import Swal from 'sweetalert2'
 
 const TopupPage = () => {
   return (
@@ -49,7 +50,13 @@ const TopupPage = () => {
           </div>
           <PrimaryButton
             text="TOP-UP"
-            onClick={() => navigate("/dashboard")}
+            onClick={() =>
+              Swal.fire({
+                title: "Top-Up Success!",
+                text: "Your top-up request has been successfullly processed",
+                icon: "success"
+              })
+            }
             width="calc(100% + 32px)"
           />
         </TransactionInputLayout>
