@@ -286,3 +286,24 @@ nav {
   height: 46px;
   font-size: 16px;
 }
+
+.dropdownInput {
+  background-color: #FAFBFD;
+  border: none;
+  border-radius: 6px;
+  height: 46px;
+  font-size: 16px;
+  padding: 0px 16px;
+  width: calc(75% + 32px);
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url('/dropdown.svg');
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+
+.dropdownInput:focus {
+  outline: 1px solid #0061FF;
+  box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
+}
