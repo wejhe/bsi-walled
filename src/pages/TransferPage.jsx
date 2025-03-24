@@ -44,9 +44,17 @@ const TransferPage = () => {
             text="TRANSFER"
             onClick={() =>
               Swal.fire({
-                title: "Transfer Success!",
-                text: "Your transfer request has been successfullly processed",
+                title: "Transfer Success",
+                text: "Your request has been successfullly processed",
                 icon: "success",
+                showCancelButton: true,
+                confirmButtonText: "PRINT",
+                cancelButtonText: "DISMISS",
+                customClass: {
+                  popup: 'modalRadius',
+                  confirmButton: 'modalButton',
+                  cancelButton: "modalButtonSecondary"
+                }
               })
             }
             width="calc(100% + 32px)"

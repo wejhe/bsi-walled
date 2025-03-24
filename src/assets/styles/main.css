@@ -102,7 +102,7 @@ nav {
 }
 
 .maininfo {
-  padding: 24px 64px;
+  padding: 8px 64px;
   display: flex;
   justify-content: space-between;
   gap: 40px;
@@ -306,4 +306,40 @@ nav {
 .dropdownInput:focus {
   outline: 1px solid #0061FF;
   box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
+}
+
+.modalRadius {
+  border-radius: 16px;
+}
+
+.modalButton {
+  background-color: #0061FF;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  height: 46px;
+  font-size: 16px;
+}
+
+.modalButtonSecondary {
+  background-color: #0062ff0f;
+  border-radius: 6px;
+  border: 1px solid #0061FF;
+  color: #0061FF;
+  font-weight: bold;
+  height: 46px;
+  font-size: 16px;
+}
+
+.transactionTableLayout {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 64px;
+}
+
+.tableContainer {
+  padding: 20px 20px 10px 20px;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 0px 40px rgb(0 0 0 / 0.04);
 }

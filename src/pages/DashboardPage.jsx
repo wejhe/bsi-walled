@@ -5,7 +5,9 @@ import MainInfoLayout from "../layouts/MainInfoLayout";
 import AccountNumber from "../components/AccountNumber";
 import AccountInfo from "../components/AccountInfo";
 import BodyLayout from "../layouts/BodyLayout";
+import TransactionTableLayout from "../layouts/TransactionTableLayout";
 import { Helmet } from "react-helmet";
+import TransactionTable from "../components/TransactionTable";
 
 const DashboardPage = () => {
   return (
@@ -22,6 +24,9 @@ const DashboardPage = () => {
           <AccountNumber />
           <AccountInfo />
         </MainInfoLayout>
+        <TransactionTableLayout>
+          <TransactionTable />
+        </TransactionTableLayout>
       </BodyLayout>
     </>
   );

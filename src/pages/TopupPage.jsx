@@ -7,7 +7,7 @@ import InputSpan from "../components/InputSpan";
 import PageTitle from "../components/PageTitle";
 import BalInfo from "../components/BalInfo";
 import DropDown from "../components/DropDown";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 const TopupPage = () => {
   return (
@@ -25,17 +25,17 @@ const TopupPage = () => {
               <DropDown
                 options={[
                   {
-                    value:"bsi",
-                    label:"Bank Syariah Indonesia (BSI)"
+                    value: "bsi",
+                    label: "Bank Syariah Indonesia (BSI)",
                   },
                   {
-                    value:"bca",
-                    label:"Bank Central Asia (BCA)"
+                    value: "bca",
+                    label: "Bank Central Asia (BCA)",
                   },
                   {
-                    value:"bri",
-                    label:"Bank Rakyat Indonesia (BRI)"
-                  }
+                    value: "bri",
+                    label: "Bank Rakyat Indonesia (BRI)",
+                  },
                 ]}
               />
             </div>
@@ -52,9 +52,17 @@ const TopupPage = () => {
             text="TOP-UP"
             onClick={() =>
               Swal.fire({
-                title: "Top-Up Success!",
-                text: "Your top-up request has been successfullly processed",
-                icon: "success"
+                title: "Top-Up Success",
+                text: "Your request has been successfullly processed",
+                icon: "success",
+                showCancelButton: true,
+                confirmButtonText: "PRINT",
+                cancelButtonText: "DISMISS",
+                customClass: {
+                  popup: 'modalRadius',
+                  confirmButton: 'modalButton',
+                  cancelButton: "modalButtonSecondary"
+                }
               })
             }
             width="calc(100% + 32px)"
