@@ -169,7 +169,7 @@ nav {
   gap: 16px;
 }
 
-.inputField {
+.inputFieldText {
   background-color: #FAFBFD;
   border: none;
   border-radius: 6px;
@@ -178,7 +178,7 @@ nav {
   font-size: 16px;
 }
 
-.inputField:focus {
+.inputFieldText:focus {
   outline: 1px solid #0061FF;
   box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
 }

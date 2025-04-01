@@ -4,6 +4,7 @@ import logo from "/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { isValidEmail, isEmpty } from "../utils/validation";
+import InputFieldPassword from "./InputFieldPassword";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -35,10 +36,9 @@ const LoginForm = () => {
             width="64%"
             onChange={handleEmailChange}
           />
-          <InputField
-            type="password"
+          <InputFieldPassword
             placeholder="Password"
-            width="64%"
+            width="100%"
             onChange={handlePasswordChange}
           />
         </div>
