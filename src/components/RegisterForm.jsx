@@ -4,7 +4,12 @@ import InputFieldPassword from "./InputFieldPassword";
 import logo from "/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { isValidEmail, isEmpty, isValidPassword, isValidPhone } from "../utils/validation";
+import {
+  isValidEmail,
+  isEmpty,
+  isValidPassword,
+  isValidPhone,
+} from "../utils/validation";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -54,6 +59,13 @@ const RegisterForm = () => {
     setAvatarInputValue(e.target.value);
     setAvatarIsEmpty(isEmpty(e.target.value));
   };
+
+  const isAnyEmpty = () =>
+    nameIsEmpty ||
+    emailIsEmpty ||
+    passwordIsEmpty ||
+    phoneIsEmpty ||
+    avatarIsEmpty;
 
   return (
     <>

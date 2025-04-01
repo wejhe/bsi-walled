@@ -30,6 +30,8 @@ const LoginForm = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
+  const isAnyEmpty = () => emailIsEmpty || passwordIsEmpty;
+
   return (
     <>
       <div className="forms">
