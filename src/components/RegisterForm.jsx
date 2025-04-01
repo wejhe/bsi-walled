@@ -68,7 +68,7 @@ const RegisterForm = () => {
             onClick={handleShowPassword}
           />
           <InputField
-            type="text"
+            type="number"
             placeholder="Phone Number"
             width="64%"
             onChange={handlePhoneChange}
