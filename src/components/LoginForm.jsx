@@ -13,6 +13,7 @@ const LoginForm = () => {
   const [emailIsValid, setEmailIsValid] = useState(false);
   const [emailIsEmpty, setEmailIsEmpty] = useState(true);
   const [passwordIsEmpty, setPasswordIsEmpty] = useState(true);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmailInputValue(e.target.value);
@@ -24,6 +25,10 @@ const LoginForm = () => {
     setPasswordInputValue(e.target.value);
     setPasswordIsEmpty(isEmpty(e.target.value));
   };
+
+  const handleShowPassword = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  }
 
   return (
     <>
@@ -37,9 +42,11 @@ const LoginForm = () => {
             onChange={handleEmailChange}
           />
           <InputFieldPassword
+            type={isPasswordVisible ? "text" : "password"}
             placeholder="Password"
             width="100%"
             onChange={handlePasswordChange}
+            onClick={handleShowPassword}
           />
         </div>
         <div className="tighterGroup">

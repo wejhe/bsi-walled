@@ -14,7 +14,7 @@ body {
 }
 
 a {
-  color: #0061FF;
+  color: #0061ff;
   text-decoration: none;
 }
 
@@ -170,7 +170,7 @@ nav {
 }
 
 .inputFieldText {
-  background-color: #FAFBFD;
+  background-color: #fafbfd;
   border: none;
   border-radius: 6px;
   height: 32px;
@@ -179,7 +179,7 @@ nav {
 }
 
 .inputFieldText:focus {
-  outline: 1px solid #0061FF;
+  outline: 1px solid #0061ff;
   box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
 }
 
@@ -196,7 +196,7 @@ nav {
 
 .primaryButton {
   cursor: pointer;
-  background-color: #0061FF;
+  background-color: #0061ff;
   border: none;
   border-radius: 6px;
   color: white;
@@ -279,16 +279,16 @@ nav {
   background-color: #0062ff0f;
   padding: 0px 16px;
   width: 100%;
-  border: 1px solid #0061FF;
+  border: 1px solid #0061ff;
   border-radius: 6px;
-  color: #0061FF;
+  color: #0061ff;
   font-weight: bold;
   height: 46px;
   font-size: 16px;
 }
 
 .dropdownInput {
-  background-color: #FAFBFD;
+  background-color: #fafbfd;
   border: none;
   border-radius: 6px;
   height: 46px;
@@ -298,13 +298,13 @@ nav {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background-image: url('/dropdown.svg');
+  background-image: url("/dropdown.svg");
   background-repeat: no-repeat;
   background-position: right 16px center;
 }
 
 .dropdownInput:focus {
-  outline: 1px solid #0061FF;
+  outline: 1px solid #0061ff;
   box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
 }
 
@@ -313,7 +313,7 @@ nav {
 }
 
 .modalButton {
-  background-color: #0061FF;
+  background-color: #0061ff;
   border-radius: 6px;
   color: white;
   font-weight: bold;
@@ -324,8 +324,8 @@ nav {
 .modalButtonSecondary {
   background-color: #0062ff0f;
   border-radius: 6px;
-  border: 1px solid #0061FF;
-  color: #0061FF;
+  border: 1px solid #0061ff;
+  color: #0061ff;
   font-weight: bold;
   height: 46px;
   font-size: 16px;
@@ -342,4 +342,30 @@ nav {
   background-color: white;
   border-radius: 16px;
   box-shadow: 0 0px 40px rgb(0 0 0 / 0.04);
+}
+
+.inputFieldPasswordWrapper {
+  display: flex;
+  width: calc(64% + 32px);
+  gap: 8px;
+  position: relative;
+}
+
+.wHideIcon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background-color: #fafbfd;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  height: 40px;
+  width: 60px;
+  background-image: url("/view.svg");
+  background-size: 24px;
+  background-repeat: no-repeat;
+  background-position: center;
 }

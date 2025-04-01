@@ -1,15 +1,15 @@
-const InputFieldPassword = ({ placeholder, width, onChange }) => {
+const InputFieldPassword = ({ type, placeholder, width, onChange, onClick }) => {
   return (
     <>
-      <div style={{display:"flex", width:"calc(64% + 32px)", gap:"24px"}}>
+      <div className="inputFieldPasswordWrapper">
         <input
           style={{ width: width }}
           className="inputFieldText"
-          type="password"
+          type={type}
           placeholder={placeholder}
           onChange={onChange}
         />
-        anjay
+        <button className="wHideIcon" onClick={onClick}></button>
       </div>
     </>
   );
