@@ -51,10 +51,10 @@ const TransferPage = () => {
                 confirmButtonText: "PRINT",
                 cancelButtonText: "DISMISS",
                 customClass: {
-                  popup: 'modalRadius',
-                  confirmButton: 'modalButton',
-                  cancelButton: "modalButtonSecondary"
-                }
+                  popup: "modalRadius",
+                  confirmButton: "modalButton",
+                  cancelButton: "modalButtonSecondary",
+                },
               })
             }
             width="calc(100% + 32px)"
