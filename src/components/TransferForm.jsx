@@ -1,3 +1,9 @@
+import InputField from "../components/InputField";
+import PrimaryButton from "../components/PrimaryButton";
+import InputSpan from "../components/InputSpan";
+import BalInfo from "../components/BalInfo";
+import Swal from "sweetalert2";
+
 const TransferForm = () => {
   return (
     <>
