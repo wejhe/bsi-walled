@@ -28,7 +28,7 @@ const LoginForm = () => {
 
   const handleShowPassword = () => {
     setIsPasswordVisible(!isPasswordVisible);
-  }
+  };
 
   return (
     <>
