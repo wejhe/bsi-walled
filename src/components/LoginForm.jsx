@@ -3,15 +3,25 @@ import PrimaryButton from "./PrimaryButton";
 import logo from "/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { isValidEmail } from "../utils/validation";
+import { isValidEmail, isEmpty } from "../utils/validation";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const [emailInputValue, setEmailInputValue] = useState("");
+  const [passwordInputValue, setPasswordInputValue] = useState("");
+  const [emailIsValid, setEmailIsValid] = useState(false);
+  const [emailIsEmpty, setEmailIsEmpty] = useState(true);
+  const [passwordIsEmpty, setPasswordIsEmpty] = useState(true);
 
   const handleEmailChange = (e) => {
     setEmailInputValue(e.target.value);
-    console.log(isValidEmail(e.target.value));
+    setEmailIsValid(isValidEmail(e.target.value));
+    setEmailIsEmpty(isEmpty(e.target.value));
+  };
+
+  const handlePasswordChange = (e) => {
+    setPasswordInputValue(e.target.value);
+    setPasswordIsEmpty(isEmpty(e.target.value));
   };
 
   return (
@@ -25,7 +35,12 @@ const LoginForm = () => {
             width="64%"
             onChange={handleEmailChange}
           />
-          <InputField type="password" placeholder="Password" width="64%" />
+          <InputField
+            type="password"
+            placeholder="Password"
+            width="64%"
+            onChange={handlePasswordChange}
+          />
         </div>
         <div className="tighterGroup">
           <PrimaryButton
