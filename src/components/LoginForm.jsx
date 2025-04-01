@@ -2,16 +2,22 @@ import InputField from "./InputField";
 import PrimaryButton from "./PrimaryButton";
 import logo from "/logo.svg";
 import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const [emailInputValue, setEmailInputValue] = useState('');
+
+  const handleEmailChange = (e) => {
+    setEmailInputValue(e.target.value)
+  }
 
   return (
     <>
       <div className="forms">
         <img className="authLogo" src={logo} />
         <div className="tighterGroup">
-          <InputField type="text" placeholder="Email" width="64%" />
+          <InputField type="text" placeholder="Email" width="64%" onChange={handleEmailChange} />
           <InputField type="password" placeholder="Password" width="64%" />
         </div>
         <div className="tighterGroup">
