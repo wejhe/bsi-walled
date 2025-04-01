@@ -4,7 +4,7 @@ import InputFieldPassword from "./InputFieldPassword";
 import logo from "/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { isValidEmail, isEmpty, isValidPassword } from "../utils/validation";
+import { isValidEmail, isEmpty, isValidPassword, isValidPhone } from "../utils/validation";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -17,6 +17,7 @@ const RegisterForm = () => {
   const [emailIsEmpty, setEmailIsEmpty] = useState(true);
   const [passwordIsValid, setPasswordIsValid] = useState(false);
   const [passwordIsEmpty, setPasswordIsEmpty] = useState(true);
+  const [phoneIsValid, setPhoneIsValid] = useState(false);
   const [phoneIsEmpty, setPhoneIsEmpty] = useState(true);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
@@ -34,7 +35,6 @@ const RegisterForm = () => {
   const handlePasswordChange = (e) => {
     setPasswordInputValue(e.target.value);
     setPasswordIsValid(isValidPassword(e.target.value));
-    console.log(isValidPassword(e.target.value))
     setPasswordIsEmpty(isEmpty(e.target.value));
   };
 
@@ -44,6 +44,7 @@ const RegisterForm = () => {
 
   const handlePhoneChange = (e) => {
     setPhoneInputValue(e.target.value);
+    setPhoneIsValid(isValidPhone(e.target.value));
     setPhoneIsEmpty(isEmpty(e.target.value));
   };
 

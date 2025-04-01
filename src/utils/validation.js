@@ -12,3 +12,8 @@ export const isValidPassword = (password) => {
     /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
   return pattern.test(password);
 };
+
+export const isValidPhone = (phone) => {
+  const pattern = /^\d{10,14}$/;
+  return pattern.test(phone);
+};
