@@ -12,6 +12,7 @@ const RegisterForm = () => {
   const [emailInputValue, setEmailInputValue] = useState("");
   const [passwordInputValue, setPasswordInputValue] = useState("");
   const [phoneInputValue, setPhoneInputValue] = useState("");
+  const [avatarInputValue, setAvatarInputValue] = useState("");
   const [nameIsEmpty, setNameIsEmpty] = useState(true);
   const [emailIsValid, setEmailIsValid] = useState(false);
   const [emailIsEmpty, setEmailIsEmpty] = useState(true);
@@ -19,6 +20,7 @@ const RegisterForm = () => {
   const [passwordIsEmpty, setPasswordIsEmpty] = useState(true);
   const [phoneIsValid, setPhoneIsValid] = useState(false);
   const [phoneIsEmpty, setPhoneIsEmpty] = useState(true);
+  const [avatarIsEmpty, setAvatarIsEmpty] = useState(true);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const handleNameChange = (e) => {
@@ -46,6 +48,11 @@ const RegisterForm = () => {
     setPhoneInputValue(e.target.value);
     setPhoneIsValid(isValidPhone(e.target.value));
     setPhoneIsEmpty(isEmpty(e.target.value));
+  };
+
+  const handleAvatarChange = (e) => {
+    setAvatarInputValue(e.target.value);
+    setAvatarIsEmpty(isEmpty(e.target.value));
   };
 
   return (
@@ -77,6 +84,12 @@ const RegisterForm = () => {
             placeholder="Phone Number"
             width="64%"
             onChange={handlePhoneChange}
+          />
+          <InputField
+            type="text"
+            placeholder="Avatar URL"
+            width="64%"
+            onChange={handleAvatarChange}
           />
         </div>
         <div className="tighterGroup">
