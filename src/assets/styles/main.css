@@ -11,6 +11,26 @@ body {
 
 .bodyLayout {
   padding-top: 80px;
+  padding-left: 16px;
+  padding-right: 16px;
+
+  /* Responsive padding */
+  @media (min-width: 768px) {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  @media (min-width: 1024px) {
+    padding-left: 64px;
+    padding-right: 64px;
+  }
+
+  @media (min-width: 1440px) {
+    padding-left: 96px;
+    padding-right: 96px;
+    max-width: 1280px; /* Membatasi lebar maksimal konten */
+    margin: 0 auto; /* Pusatkan konten */
+  }
 }
 
 a {
@@ -30,17 +50,36 @@ input[type="number"] {
 }
 
 nav {
-  padding: 0 64px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 80px;
-  background-color: white;
-  position: fixed;
+    position: fixed;
   top: 0;
   left: 0;
   right: 0;
+  height: 80px;
+  background-color: white;
   z-index: 1000;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+  padding-left: 32px;
+  padding-right: 32px;
+
+  /* Responsive padding */
+
+  @media (min-width: 768px) {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  @media (min-width: 1024px) {
+    padding-left: 128px;
+    padding-right: 128px;
+  }
+
+  
 }
 
 .menu {
