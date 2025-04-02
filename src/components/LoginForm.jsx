@@ -49,6 +49,7 @@ const LoginForm = () => {
             width="100%"
             onChange={handlePasswordChange}
             onClick={handleShowPassword}
+            isVisible={isPasswordVisible}
           />
         </div>
         <div className="tighterGroup">

@@ -380,6 +380,7 @@ nav {
   position: absolute;
   right: 0;
   top: 50%;
+  padding-top: 5px;
   transform: translateY(-50%);
   cursor: pointer;
   background-color: #fafbfd;
@@ -389,8 +390,4 @@ nav {
   font-weight: bold;
   height: 40px;
   width: 60px;
-  background-image: url("/view.svg");
-  background-size: 24px;
-  background-repeat: no-repeat;
-  background-position: center;
 }

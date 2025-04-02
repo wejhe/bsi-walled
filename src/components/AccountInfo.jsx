@@ -18,10 +18,7 @@ const AccountInfo = () => {
           <strong className="info">
             Rp {balanceVisible ? "980.572.000" : "**********"}
           </strong>
-          <a
-            className="clickableicon"
-            onClick={handleBalanceVisibility}
-          >
+          <a className="clickableicon" onClick={handleBalanceVisibility}>
             {balanceVisible ? (
               <Eye size={32} color="#c0c0c0" />
             ) : (
