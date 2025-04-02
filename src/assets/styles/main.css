@@ -105,6 +105,10 @@ nav {
   align-items: center;
 }
 
+.eyes {
+  width: 32px;
+}
+
 .accactionbtn img {
   height: 64px;
 }
@@ -117,13 +121,13 @@ nav {
 }
 
 .greet {
-  font-size: 60px;
-  font-weight: 700;
+  font-size: 48px;
+  font-weight: bold;
   margin-bottom: 8px;
 }
 
 .subgreet {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 400;
   margin-left: 4px;
 }
@@ -138,7 +142,7 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 20px;
+  font-size: 18px;
   text-align: right;
 }
 
@@ -149,6 +153,10 @@ nav {
   height: 120px;
   width: 120px;
   object-fit: cover;
+}
+
+.account-type{
+  font-size: 16px;
 }
 
 .maininfo {
@@ -171,6 +179,10 @@ nav {
   align-items: flex-start;
   justify-content: center;
   gap: 4px;
+}
+
+.info{
+  font-size: 32px;
 }
 
 .accbalance {
@@ -204,6 +216,7 @@ nav {
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  font-size: 14px;
 }
 
 .maininfo h2 {
