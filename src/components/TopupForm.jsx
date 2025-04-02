@@ -7,12 +7,15 @@ import ReactDOM from "react-dom/client";
 import Swal from "sweetalert2";
 import PinField from "react-pin-field";
 import { useState } from "react";
+import { isEmpty } from "../utils/validation";
 
 const TopupForm = () => {
   const [pinInputValue, setPinInputValue] = useState("");
+  const [pinIsEmpty, setPinIsEmpty] = useState(true);
 
   const handlePinChange = (value) => {
     setPinInputValue(value);
+    setPinIsEmpty(isEmpty(value));
   };
 
   return (
