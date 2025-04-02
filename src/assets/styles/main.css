@@ -297,6 +297,25 @@ nav {
   font-size: 16px;
 }
 
+.form-group {
+  display: flex;
+  border-radius: 12px;
+  background-color: #fafbfd;
+  width: 80%;
+}
+
+.span-form-group {
+  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  min-width: fit-content;
+  border-radius: 6px;
+  background-color: #ededed;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
+}
+
 .balInfo {
   display: flex;
   justify-content: flex-start;
