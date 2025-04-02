@@ -1,4 +1,3 @@
-// import view from "/view.svg";
 import topup from "/topup.png";
 import transfer from "/transfer.png";
 import { useState } from "react";
@@ -10,18 +9,17 @@ const AccountInfo = () => {
   const handleBalanceVisibility = () => {
     setBalanceVisible(!balanceVisible);
   };
+
   return (
     <div className="accinfo">
       <div className="accbalance">
         <p>Account Balance</p>
         <div className="balanceamount">
           <strong className="info">
-            {/* Rp 980.572.000 */}
-            {balanceVisible ? "Rp 980.572.000" : "Rp **********"}
+            Rp {balanceVisible ? "980.572.000" : "**********"}
           </strong>
           <a
             className="clickableicon"
-            href="#"
             onClick={handleBalanceVisibility}
           >
             {balanceVisible ? (
