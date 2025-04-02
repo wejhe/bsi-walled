@@ -90,6 +90,7 @@ const RegisterForm = () => {
             width="100%"
             onChange={handlePasswordChange}
             onClick={handleShowPassword}
+            isVisible={isPasswordVisible}
           />
           <InputField
             type="number"
