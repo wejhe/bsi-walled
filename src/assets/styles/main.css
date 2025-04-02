@@ -11,26 +11,6 @@ body {
 
 .bodyLayout {
   padding-top: 80px;
-  padding-left: 16px;
-  padding-right: 16px;
-
-  /* Responsive padding */
-  @media (min-width: 768px) {
-    padding-left: 32px;
-    padding-right: 32px;
-  }
-
-  @media (min-width: 1024px) {
-    padding-left: 64px;
-    padding-right: 64px;
-  }
-
-  @media (min-width: 1440px) {
-    padding-left: 96px;
-    padding-right: 96px;
-    max-width: 1280px; /* Membatasi lebar maksimal konten */
-    margin: 0 auto; /* Pusatkan konten */
-  }
 }
 
 a {
@@ -50,36 +30,17 @@ input[type="number"] {
 }
 
 nav {
-    position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 80px;
-  background-color: white;
-  z-index: 1000;
-}
-
-.nav-container {
+  padding: 0 128px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 100%;
-  padding-left: 32px;
-  padding-right: 32px;
-
-  /* Responsive padding */
-
-  @media (min-width: 768px) {
-    padding-left: 32px;
-    padding-right: 32px;
-  }
-
-  @media (min-width: 1024px) {
-    padding-left: 128px;
-    padding-right: 128px;
-  }
-
-  
+  height: 80px;
+  background-color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 
 .menu {
@@ -103,6 +64,7 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .eyes {
@@ -114,7 +76,7 @@ nav {
 }
 
 .greetings {
-  padding: 48px 64px;
+  padding: 48px 128px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -155,12 +117,12 @@ nav {
   object-fit: cover;
 }
 
-.account-type{
+.account-type {
   font-size: 16px;
 }
 
 .maininfo {
-  padding: 8px 64px;
+  padding: 8px 128px;
   display: flex;
   justify-content: space-between;
   gap: 40px;
@@ -181,7 +143,7 @@ nav {
   gap: 4px;
 }
 
-.info{
+.info {
   font-size: 32px;
 }
 
@@ -397,7 +359,7 @@ nav {
 .transactionTableLayout {
   display: flex;
   flex-direction: column;
-  padding: 40px 64px;
+  padding: 40px 128px;
 }
 
 .tableContainer {
