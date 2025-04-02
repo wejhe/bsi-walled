@@ -3,9 +3,18 @@ import PrimaryButton from "../components/PrimaryButton";
 import InputSpan from "../components/InputSpan";
 import BalInfo from "../components/BalInfo";
 import DropDown from "../components/DropDown";
+import ReactDOM from "react-dom/client";
 import Swal from "sweetalert2";
+import PinField from "react-pin-field";
+import { useState } from "react";
 
 const TopupForm = () => {
+  const [pinInputValue, setPinInputValue] = useState("");
+
+  const handlePinChange = (value) => {
+    setPinInputValue(value);
+  };
+
   return (
     <>
       <BalInfo />
@@ -42,17 +51,49 @@ const TopupForm = () => {
         text="TOP-UP"
         onClick={() =>
           Swal.fire({
-            title: "Top-Up Success",
-            text: "Your request has been successfullly processed",
-            icon: "success",
+            title: "Transaction Pin",
+            html: "<p>Please enter your 6 digit transaction pin</p><br><br><div id='pinInputContainer'></div><br>",
+            icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "PRINT",
-            cancelButtonText: "DISMISS",
+            confirmButtonText: "CONFIRM",
+            cancelButtonText: "CANCEL",
             customClass: {
               popup: "modalRadius",
               confirmButton: "modalButton",
               cancelButton: "modalButtonSecondary",
             },
+            willOpen: () => {
+              const container = document.getElementById("pinInputContainer");
+              const root = ReactDOM.createRoot(container); // Membuat root React untuk container
+              root.render(
+                <PinField
+                  autoComplete="one-time-code"
+                  autoCorrect="off"
+                  className="wPinField"
+                  dir="ltr"
+                  length={6}
+                  type="password"
+                  autoFocus
+                  onChange={handlePinChange}
+                />
+              );
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Top-Up Success",
+                text: "Your request has been successfullly processed",
+                icon: "success",
+                showCancelButton: true,
+                confirmButtonText: "PRINT",
+                cancelButtonText: "DISMISS",
+                customClass: {
+                  popup: "modalRadius",
+                  confirmButton: "modalButton",
+                  cancelButton: "modalButtonSecondary",
+                },
+              });
+            }
           })
         }
         width="calc(100% + 32px)"
