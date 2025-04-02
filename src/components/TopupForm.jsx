@@ -22,7 +22,7 @@ const TopupForm = () => {
         toast: true,
         position: "bottom-end",
         icon: "warning",
-        title: "Please enter an amount before proceeding",
+        title: "Please enter your transaction amount before proceeding",
         showConfirmButton: false,
         timer: 3000,
       });
