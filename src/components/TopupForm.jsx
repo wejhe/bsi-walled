@@ -20,9 +20,9 @@ const TopupForm = () => {
     if (!topUpAmount || topUpAmount === "") {
       Swal.fire({
         toast: true,
-        position: "bottom-end",
+        position: "bottom-start",
         icon: "warning",
-        title: "Please enter your transaction amount before proceeding",
+        title: "Please enter transaction amount before proceeding",
         showConfirmButton: false,
         timer: 3000,
       });

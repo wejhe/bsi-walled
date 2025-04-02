@@ -351,6 +351,13 @@ nav {
   border-radius: 16px;
 }
 
+.swal2-toast {
+  border-radius: 8px;
+  box-shadow: none !important;
+  border: 1px solid #F8BB86;
+  background-color: #FFFBF7 !important;
+}
+
 .modalButton {
   background-color: #0061ff;
   border-radius: 6px;
