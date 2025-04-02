@@ -2,9 +2,21 @@ import InputField from "../components/InputField";
 import PrimaryButton from "../components/PrimaryButton";
 import InputSpan from "../components/InputSpan";
 import BalInfo from "../components/BalInfo";
+import ReactDOM from "react-dom/client";
 import Swal from "sweetalert2";
+import PinField from "react-pin-field";
+import { useState } from "react";
+import { isEmpty } from "../utils/validation";
 
 const TransferForm = () => {
+  const [pinInputValue, setPinInputValue] = useState("");
+  const [pinIsEmpty, setPinIsEmpty] = useState(true);
+
+  const handlePinChange = (value) => {
+    setPinInputValue(value);
+    setPinIsEmpty(isEmpty(value));
+  };
+
   return (
     <>
       <BalInfo />
@@ -26,17 +38,49 @@ const TransferForm = () => {
         text="TRANSFER"
         onClick={() =>
           Swal.fire({
-            title: "Transfer Success",
-            text: "Your request has been successfullly processed",
-            icon: "success",
+            title: "Transaction Pin",
+            html: "<p>Please enter your 6 digit transaction pin</p><br><br><div id='pinInputContainer'></div><br>",
+            icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "PRINT",
-            cancelButtonText: "DISMISS",
+            confirmButtonText: "CONFIRM",
+            cancelButtonText: "CANCEL",
             customClass: {
               popup: "modalRadius",
               confirmButton: "modalButton",
               cancelButton: "modalButtonSecondary",
             },
+            willOpen: () => {
+              const container = document.getElementById("pinInputContainer");
+              const root = ReactDOM.createRoot(container); // Membuat root React untuk container
+              root.render(
+                <PinField
+                  autoComplete="one-time-code"
+                  autoCorrect="off"
+                  className="wPinField"
+                  dir="ltr"
+                  length={6}
+                  type="password"
+                  autoFocus
+                  onChange={handlePinChange}
+                />
+              );
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Transfer Success",
+                text: "Your request has been successfullly processed",
+                icon: "success",
+                showCancelButton: true,
+                confirmButtonText: "PRINT",
+                cancelButtonText: "DISMISS",
+                customClass: {
+                  popup: "modalRadius",
+                  confirmButton: "modalButton",
+                  cancelButton: "modalButtonSecondary",
+                },
+              });
+            }
           })
         }
         width="calc(100% + 32px)"
