@@ -4,6 +4,7 @@ import InputFieldPassword from "./InputFieldPassword";
 import logo from "/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import Swal from "sweetalert2";
 import {
   isValidEmail,
   isEmpty,
@@ -67,6 +68,48 @@ const RegisterForm = () => {
     phoneIsEmpty ||
     avatarIsEmpty;
 
+  const handleRegister = () => {
+    if (isAnyEmpty()) {
+      Swal.fire({
+        toast: true,
+        position: "bottom-start",
+        icon: "warning",
+        title: "Please fill out all of the field before proceeding",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    } else if (!emailIsValid) {
+      Swal.fire({
+        toast: true,
+        position: "bottom-start",
+        icon: "warning",
+        title: "Please enter a valid email address before proceeding",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    } else if (!passwordIsValid) {
+      Swal.fire({
+        toast: true,
+        position: "bottom-start",
+        icon: "warning",
+        title: "Your password must be a combination of letters and numbers with minimum 8 characters",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    } else if (!phoneIsValid) {
+      Swal.fire({
+        toast: true,
+        position: "bottom-start",
+        icon: "warning",
+        title: "Please enter a valid phone number before proceeding",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    } else {
+      navigate("/dashboard");
+    }
+  };
+
   return (
     <>
       <div className="forms">
@@ -108,7 +151,7 @@ const RegisterForm = () => {
         <div className="tighterGroup">
           <PrimaryButton
             text="REGISTER"
-            onClick={() => navigate("/dashboard")}
+            onClick={handleRegister}
             width="calc(64% + 32px)"
           />
           <p>

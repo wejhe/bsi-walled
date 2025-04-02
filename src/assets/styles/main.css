@@ -208,6 +208,20 @@ nav {
   box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
 }
 
+.inputFieldCurrency {
+  background-color: #fafbfd;
+  border: none;
+  border-radius: 6px;
+  height: 32px;
+  padding: 6px 16px 8px 46px;
+  font-size: 16px;
+}
+
+.inputFieldCurrency:focus {
+  outline: 1px solid #0061ff;
+  box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
+}
+
 .forms {
   display: flex;
   flex-direction: column;
@@ -297,25 +311,6 @@ nav {
   font-size: 16px;
 }
 
-.form-group {
-  display: flex;
-  border-radius: 12px;
-  background-color: #fafbfd;
-  width: 80%;
-}
-
-.span-form-group {
-  padding: 8px 16px;
-  display: inline-flex;
-  align-items: center;
-  min-width: fit-content;
-  border-radius: 6px;
-  background-color: #ededed;
-  font-size: 14px;
-  font-weight: bold;
-  color: #000000;
-}
-
 .balInfo {
   display: flex;
   justify-content: flex-start;
@@ -354,6 +349,13 @@ nav {
 
 .modalRadius {
   border-radius: 16px;
+}
+
+.swal2-toast {
+  border-radius: 8px;
+  box-shadow: none !important;
+  border: 1px solid #F8BB86;
+  background-color: #FFFBF7 !important;
 }
 
 .modalButton {
@@ -395,6 +397,12 @@ nav {
   position: relative;
 }
 
+.inputFieldCurrencyWrapper {
+  display: flex;
+  width: calc(75% + 32px);
+  position: relative;
+}
+
 .wHideIcon {
   position: absolute;
   right: 0;
@@ -409,6 +417,21 @@ nav {
   font-weight: bold;
   height: 40px;
   width: 60px;
+}
+
+.wCurrencyIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background-color: #fafbfd;
+  border: none;
+  border-radius: 6px;
+  color: black;
+  font-weight: bold;
+  font-size: 16px;
+  height: 40px;
 }
 
 #pinInputContainer {
