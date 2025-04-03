@@ -43,7 +43,7 @@ const TopupForm = () => {
       Swal.fire({
         title: "Confirmation",
         html: `
-                <div style="text-align: left; font-size: 16px; line-height: 2.4; padding-bottom: 16px">
+                <div style="text-align: left; font-size: 16px; line-height: 2.2; padding-bottom: 16px">
                   <p>Top-Up Amount <span style="float: right; font-weight: bold;">Rp ${formatCurrency(
                     topUpAmount
                   )}</span></p>
@@ -98,7 +98,7 @@ const TopupForm = () => {
             title:
               '<span style="color: #4CAF50; font-weight: 600; padding:0; margin: 0;">Top-Up Success</span>',
             html: `
-                      <div style="text-align: left; font-size: 16px; line-height: 2.4; padding-top: 8px; padding-bottom: 8px">
+                      <div style="text-align: left; font-size: 16px; line-height: 2.2; padding-bottom: 16px">
                         <p>Amount<span style="float: right; font-weight: bold;">Rp ${formatCurrency(
                           topUpAmount
                         )}</span></p>
@@ -107,15 +107,15 @@ const TopupForm = () => {
                         <p>Recipient<span style="float: right;">1234005001</span></p>
                         <p>Note<span style="float: right;">Bayar hutang dan beli Bakso</span></p>
                       </div>
+                      <hr style="border-top: 1px solid #ccc;">
+                      <button class="shareReceipt"></button>
+                      <button class="downloadReceipt"></button>
                     `,
             icon: "success",
-            showCancelButton: true,
-            confirmButtonText: "PRINT",
-            cancelButtonText: "DISMISS",
+            confirmButtonText: "CONTINUE",
             customClass: {
               popup: "modalRadius",
-              confirmButton: "modalButton",
-              cancelButton: "modalButtonSecondary",
+              confirmButton: "modalButtonFull",
             },
           });
         }
