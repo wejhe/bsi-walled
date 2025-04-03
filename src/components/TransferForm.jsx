@@ -139,7 +139,7 @@ const TransferForm = () => {
           <InputSpan text="&#128176; Amount" width="25%" />
           <InputCurrency
             value={transferAmount}
-            placeholder="Top-Up Amount"
+            placeholder="Tansfer Amount"
             width="100%"
             onChange={handleInputChange}
           />
