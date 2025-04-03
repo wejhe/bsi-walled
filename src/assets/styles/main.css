@@ -367,6 +367,17 @@ nav {
   font-size: 16px;
 }
 
+.modalButtonFull {
+  margin-top: 0;
+  background-color: #0061ff;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  height: 46px;
+  font-size: 16px;
+  width: 28.6em;
+}
+
 .modalButtonSecondary {
   background-color: #0062ff0f;
   border-radius: 6px;
@@ -456,6 +467,38 @@ nav {
   outline: 1px solid #0061ff;
   box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
   caret-color: transparent;
+}
+
+.downloadReceipt {
+  margin-top: 20px;
+  margin-bottom: -10px;
+  margin-left: 4px;
+  margin-right: 4px;
+  background-color: #0062ff0f;
+  border: none;
+  border-radius: 28px;
+  height: 56px;
+  width: 56px;
+  background-image: url("/download.svg");
+  background-repeat: no-repeat;
+  background-position: left 16px center;
+  cursor: pointer;
+}
+
+.shareReceipt {
+  margin-top: 20px;
+  margin-bottom: -10px;
+  margin-left: 4px;
+  margin-right: 4px;
+  background-color: #0062ff0f;
+  border: none;
+  border-radius: 28px;
+  height: 56px;
+  width: 56px;
+  background-image: url("/share.svg");
+  background-repeat: no-repeat;
+  background-position: left 16px center;
+  cursor: pointer;
 }
 
 .bounce {
