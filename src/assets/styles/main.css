@@ -354,8 +354,8 @@ nav {
 .swal2-toast {
   border-radius: 8px;
   box-shadow: none !important;
-  border: 1px solid #F8BB86;
-  background-color: #FFFBF7 !important;
+  border: 1px solid #f8bb86;
+  background-color: #fffbf7 !important;
 }
 
 .modalButton {
@@ -424,7 +424,6 @@ nav {
   left: 10px;
   top: 50%;
   transform: translateY(-50%);
-  cursor: pointer;
   background-color: #fafbfd;
   border: none;
   border-radius: 6px;
@@ -439,6 +438,7 @@ nav {
   width: 100%;
   justify-content: center;
   gap: 12px;
+  margin-bottom: 16px;
 }
 
 .wPinField {
@@ -456,4 +456,45 @@ nav {
   outline: 1px solid #0061ff;
   box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
   caret-color: transparent;
+}
+
+.bounce {
+  animation-name: bounce;
+  animation-duration: 0.5s;
+  animation-delay: 0s;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateX(0px);
+    timing-function: ease-in;
+  }
+  37% {
+    transform: translateX(5px);
+    timing-function: ease-out;
+  }
+  55% {
+    transform: translateX(-5px);
+    timing-function: ease-in;
+  }
+  73% {
+    transform: translateX(4px);
+    timing-function: ease-out;
+  }
+  82% {
+    transform: translateX(-4px);
+    timing-function: ease-in;
+  }
+  91% {
+    transform: translateX(2px);
+    timing-function: ease-out;
+  }
+  96% {
+    transform: translateX(-2px);
+    timing-function: ease-in;
+  }
+  100% {
+    transform: translateX(0px);
+    timing-function: ease-in;
+  }
 }
