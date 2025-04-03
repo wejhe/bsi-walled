@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
-const useStore = create((set) => ({
+const useAccountStore = create((set) => ({
   emailInputValue: "",
   setEmailInputValue: (value) => set({ emailInputValue: value }),
 }));
 
-export default useStore;
+export default useAccountStore;
