@@ -6,3 +6,14 @@ export const isValidEmail = (email) => {
 export const isEmpty = (value) => {
   return value === "";
 };
+
+export const isValidPassword = (password) => {
+  const pattern =
+    /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+  return pattern.test(password);
+};
+
+export const isValidPhone = (phone) => {
+  const pattern = /^\d{10,14}$/;
+  return pattern.test(phone);
+};

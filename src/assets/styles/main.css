@@ -18,8 +18,19 @@ a {
   text-decoration: none;
 }
 
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: none;
+  appearance: none;
+}
+
 nav {
-  padding: 0 64px;
+  padding: 0 128px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -53,6 +64,11 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+}
+
+.eyes {
+  width: 32px;
 }
 
 .accactionbtn img {
@@ -60,20 +76,20 @@ nav {
 }
 
 .greetings {
-  padding: 48px 64px;
+  padding: 48px 128px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .greet {
-  font-size: 60px;
-  font-weight: 700;
+  font-size: 48px;
+  font-weight: bold;
   margin-bottom: 8px;
 }
 
 .subgreet {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 400;
   margin-left: 4px;
 }
@@ -88,7 +104,7 @@ nav {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 20px;
+  font-size: 18px;
   text-align: right;
 }
 
@@ -101,8 +117,12 @@ nav {
   object-fit: cover;
 }
 
+.account-type {
+  font-size: 16px;
+}
+
 .maininfo {
-  padding: 8px 64px;
+  padding: 8px 128px;
   display: flex;
   justify-content: space-between;
   gap: 40px;
@@ -121,6 +141,10 @@ nav {
   align-items: flex-start;
   justify-content: center;
   gap: 4px;
+}
+
+.info {
+  font-size: 32px;
 }
 
 .accbalance {
@@ -154,6 +178,7 @@ nav {
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  font-size: 14px;
 }
 
 .maininfo h2 {
@@ -179,6 +204,20 @@ nav {
 }
 
 .inputFieldText:focus {
+  outline: 1px solid #0061ff;
+  box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
+}
+
+.inputFieldCurrency {
+  background-color: #fafbfd;
+  border: none;
+  border-radius: 6px;
+  height: 32px;
+  padding: 6px 16px 8px 46px;
+  font-size: 16px;
+}
+
+.inputFieldCurrency:focus {
   outline: 1px solid #0061ff;
   box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
 }
@@ -312,6 +351,13 @@ nav {
   border-radius: 16px;
 }
 
+.swal2-toast {
+  border-radius: 8px;
+  box-shadow: none !important;
+  border: 1px solid #F8BB86;
+  background-color: #FFFBF7 !important;
+}
+
 .modalButton {
   background-color: #0061ff;
   border-radius: 6px;
@@ -334,7 +380,7 @@ nav {
 .transactionTableLayout {
   display: flex;
   flex-direction: column;
-  padding: 40px 64px;
+  padding: 40px 128px;
 }
 
 .tableContainer {
@@ -351,10 +397,17 @@ nav {
   position: relative;
 }
 
+.inputFieldCurrencyWrapper {
+  display: flex;
+  width: calc(75% + 32px);
+  position: relative;
+}
+
 .wHideIcon {
   position: absolute;
   right: 0;
   top: 50%;
+  padding-top: 5px;
   transform: translateY(-50%);
   cursor: pointer;
   background-color: #fafbfd;
@@ -364,8 +417,43 @@ nav {
   font-weight: bold;
   height: 40px;
   width: 60px;
-  background-image: url("/view.svg");
-  background-size: 24px;
-  background-repeat: no-repeat;
-  background-position: center;
+}
+
+.wCurrencyIcon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  background-color: #fafbfd;
+  border: none;
+  border-radius: 6px;
+  color: black;
+  font-weight: bold;
+  font-size: 16px;
+  height: 40px;
+}
+
+#pinInputContainer {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 12px;
+}
+
+.wPinField {
+  background-color: #f4f4f4;
+  border: none;
+  border-radius: 6px;
+  height: 48px;
+  width: 24px;
+  padding: 6px 16px 8px 16px;
+  font-size: 40px;
+  text-align: center;
+}
+
+.wPinField:focus {
+  outline: 1px solid #0061ff;
+  box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
+  caret-color: transparent;
 }

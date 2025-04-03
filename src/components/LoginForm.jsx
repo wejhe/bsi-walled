@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { isValidEmail, isEmpty } from "../utils/validation";
 import InputFieldPassword from "./InputFieldPassword";
+import Swal from "sweetalert2";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -28,7 +29,33 @@ const LoginForm = () => {
 
   const handleShowPassword = () => {
     setIsPasswordVisible(!isPasswordVisible);
-  }
+  };
+
+  const isAnyEmpty = () => emailIsEmpty || passwordIsEmpty;
+
+  const handleLogin = () => {
+    if (isAnyEmpty()) {
+      Swal.fire({
+        toast: true,
+        position: "bottom-start",
+        icon: "warning",
+        title: "Please fill out all of the field before proceeding",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    } else if (!emailIsValid) {
+      Swal.fire({
+        toast: true,
+        position: "bottom-start",
+        icon: "warning",
+        title: "Please enter a valid email address before proceeding",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    } else {
+      navigate("/dashboard");
+    }
+  };
 
   return (
     <>
@@ -47,12 +74,13 @@ const LoginForm = () => {
             width="100%"
             onChange={handlePasswordChange}
             onClick={handleShowPassword}
+            isVisible={isPasswordVisible}
           />
         </div>
         <div className="tighterGroup">
           <PrimaryButton
             text="LOGIN"
-            onClick={() => navigate("/dashboard")}
+            onClick={handleLogin}
             width="calc(64% + 32px)"
           />
           <p>
