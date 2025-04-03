@@ -17,3 +17,7 @@ export const isValidPhone = (phone) => {
   const pattern = /^\d{10,14}$/;
   return pattern.test(phone);
 };
+
+export const isPinComplete = (pin) => {
+  return pin.length == 6;
+}

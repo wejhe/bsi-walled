@@ -6,19 +6,28 @@ import DropDown from "../components/DropDown";
 import ReactDOM from "react-dom/client";
 import Swal from "sweetalert2";
 import PinField from "react-pin-field";
-import { useState } from "react";
-import { isEmpty } from "../utils/validation";
+import { useState, useEffect, useRef } from "react";
+import { isEmpty, isPinComplete } from "../utils/validation";
 import InputCurrency from "./InputCurrency";
 import { formatCurrency } from "../utils/formatter";
 
 const TopupForm = () => {
   const [pinInputValue, setPinInputValue] = useState("");
   const [pinIsEmpty, setPinIsEmpty] = useState(true);
+  const [pinIsComplete, setPinIsComplete] = useState(false);
 
   const [topUpSource, setTopUpSource] = useState(
     "Bank Syariah Indonesia (BSI)"
   );
   const [topUpAmount, setTopUpAmount] = useState("");
+
+  const pinIsEmptyRef = useRef(pinIsEmpty);
+  const pinIsCompleteRef = useRef(pinIsComplete);
+
+  useEffect(() => {
+    pinIsEmptyRef.current = pinIsEmpty;
+    pinIsCompleteRef.current = pinIsComplete;
+  }, [pinIsEmpty, pinIsComplete]);
 
   const handleTopUpClick = () => {
     if (!topUpAmount || topUpAmount === "") {
@@ -43,6 +52,7 @@ const TopupForm = () => {
                 <hr style="border-top: 1px solid #ccc;">
                 <br><p style="font-size: 16px">Please enter your 6 digit transaction pin to proceed</p>
                 <br><div id='pinInputContainer'></div>
+                <div id="pinErrorMessage" style="font-size: 16px; color: red; display: none;">&#9888; Error : Your pin is either empty or incomplete</div>
               `,
         icon: "warning",
         showCancelButton: true,
@@ -68,6 +78,19 @@ const TopupForm = () => {
               onChange={handlePinChange}
             />
           );
+        },
+        preConfirm: () => {
+          if (pinIsEmptyRef.current || !pinIsCompleteRef.current) {
+            const errorMessageElement =
+              document.getElementById("pinErrorMessage");
+            errorMessageElement.style.display = "block";
+            errorMessageElement.classList.add("bounce");
+            setTimeout(function () {
+              errorMessageElement.classList.remove("bounce");
+            }, 1000);
+            return false;
+          }
+          return true;
         },
       }).then((result) => {
         if (result.isConfirmed) {
@@ -111,6 +134,7 @@ const TopupForm = () => {
   const handlePinChange = (value) => {
     setPinInputValue(value);
     setPinIsEmpty(isEmpty(value));
+    setPinIsComplete(isPinComplete(value));
   };
 
   return (
