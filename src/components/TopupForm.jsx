@@ -9,11 +9,15 @@ import PinField from "react-pin-field";
 import { useState } from "react";
 import { isEmpty } from "../utils/validation";
 import InputCurrency from "./InputCurrency";
+import { formatCurrency } from "../utils/formatter";
 
 const TopupForm = () => {
   const [pinInputValue, setPinInputValue] = useState("");
   const [pinIsEmpty, setPinIsEmpty] = useState(true);
 
+  const [topUpSource, setTopUpSource] = useState(
+    "Bank Syariah Indonesia (BSI)"
+  );
   const [topUpAmount, setTopUpAmount] = useState("");
 
   const handleTopUpClick = () => {
@@ -28,8 +32,18 @@ const TopupForm = () => {
       });
     } else {
       Swal.fire({
-        title: "Transaction Pin",
-        html: "<p>Please enter your 6 digit transaction pin</p><br><br><div id='pinInputContainer'></div><br>",
+        title: "Confirmation",
+        html: `
+                <div style="text-align: left; font-size: 16px; line-height: 2.4; padding-bottom: 16px">
+                  <p>Top-Up Amount <span style="float: right; font-weight: bold;">Rp ${formatCurrency(
+                    topUpAmount
+                  )}</span></p>
+                  <p>Source<span style="float: right;">${topUpSource}</span></p>
+                </div>
+                <hr style="border-top: 1px solid #ccc;">
+                <br><p style="font-size: 16px">Please enter your 6 digit transaction pin to proceed</p>
+                <br><div id='pinInputContainer'></div>
+              `,
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "CONFIRM",
@@ -61,12 +75,14 @@ const TopupForm = () => {
             title:
               '<span style="color: #4CAF50; font-weight: 600; padding:0; margin: 0;">Top-Up Success</span>',
             html: `
-                      <div style="text-align: left; font-size: 16px; line-height: 2.4; padding-top: 16px; padding-bottom: 16px">
-                        <p><strong>Amount</strong> <span style="float: right; font-weight: bold;">1.000.000</span></p>
-                        <p><strong>Transaction ID</strong> <span style="float: right;">338818239039011</span></p>
-                        <p><strong>Sender</strong> <span style="float: right;">11234001000</span></p>
-                        <p><strong>Recipient</strong> <span style="float: right;">1234005001</span></p>
-                        <p><strong>Description</strong><span style="float: right;"> Bayar hutang dan beli Bakso</span></p>
+                      <div style="text-align: left; font-size: 16px; line-height: 2.4; padding-top: 8px; padding-bottom: 8px">
+                        <p>Amount<span style="float: right; font-weight: bold;">Rp ${formatCurrency(
+                          topUpAmount
+                        )}</span></p>
+                        <p>Transaction ID<span style="float: right;">338818239039011</span></p>
+                        <p>Sender<span style="float: right;">${topUpSource}</span></p>
+                        <p>Recipient<span style="float: right;">1234005001</span></p>
+                        <p>Note<span style="float: right;">Bayar hutang dan beli Bakso</span></p>
                       </div>
                     `,
             icon: "success",
@@ -82,6 +98,10 @@ const TopupForm = () => {
         }
       });
     }
+  };
+
+  const handleSourceChange = (e) => {
+    setTopUpSource(e.target.selectedOptions[0].label);
   };
 
   const handleInputChange = (value) => {
@@ -114,6 +134,7 @@ const TopupForm = () => {
                 label: "Bank Rakyat Indonesia (BRI)",
               },
             ]}
+            onChange={handleSourceChange}
           />
         </div>
         <div className="inputGroupWithSpan">
