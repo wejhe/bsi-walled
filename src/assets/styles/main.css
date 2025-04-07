@@ -209,8 +209,8 @@ nav {
 }
 
 .inputFieldCurrency {
-  background-color: #fafbfd;
-  border: none;
+  /* background-color: #fafbfd; */
+  /* border: none; */
   border-radius: 6px;
   height: 32px;
   padding: 6px 16px 8px 46px;
@@ -284,6 +284,21 @@ nav {
   padding: 40px 56px;
   gap: 32px;
   width: 40%;
+  background-color: white;
+  border-radius: 16px;
+  color: black;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 0px 40px rgb(0 0 0 / 0.04);
+}
+
+.cardInfaq {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  padding: 24px 32px; /* sebelumnya 40px 56px */
+  width: 40%;
+  gap: 20px; /* sebelumnya 32px */
   background-color: white;
   border-radius: 16px;
   color: black;
@@ -414,6 +429,69 @@ nav {
   position: relative;
 }
 
+.infaqHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.full-width-infaq {
+  width: 100% !important;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.inputAmount {
+  width: 100% !important;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width-infaq .primaryButton {
+  width: 100% !important;
+}
+
+.customAmountGroup .inputFieldCurrencyWrapper {
+  width: 100% !important;
+}
+
+.quickAmountGroup {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap; /* responsif kalau sempit */
+}
+
+.amountOption {
+  flex: 1 1 calc(25% - 9px); /* 4 kolom dengan gap 12px */
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: white;
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.amountOption.selected {
+  background-color: #f4fafe;
+  border: 1px solid #23a6f0;
+  color: #23a6f0;
+}
+
+@media (max-width: 500px) {
+  .amountOption {
+    flex: 1 1 calc(50% - 6px); /* 2 kolom */
+  }
+}
+
+.amountOption:hover {
+  background-color: #f3f4f6; /* hover abu-abu terang */
+}
+
 .wHideIcon {
   position: absolute;
   right: 0;
@@ -435,7 +513,7 @@ nav {
   left: 10px;
   top: 50%;
   transform: translateY(-50%);
-  background-color: #fafbfd;
+  background-color: transparent;
   border: none;
   border-radius: 6px;
   color: black;
