@@ -10,8 +10,10 @@ import { useState, useEffect, useRef } from "react";
 import { isEmpty, isPinComplete } from "../utils/validation";
 import InputCurrency from "./InputCurrency";
 import { formatCurrency } from "../utils/formatter";
+import { useNavigate } from "react-router-dom";
 
 const TopupForm = () => {
+  const navigate = useNavigate();
   const [pinInputValue, setPinInputValue] = useState("");
   const [pinIsEmpty, setPinIsEmpty] = useState(true);
   const [pinIsComplete, setPinIsComplete] = useState(false);
@@ -117,6 +119,10 @@ const TopupForm = () => {
               popup: "modalRadius",
               confirmButton: "modalButtonFull",
             },
+          }).then((res) => {
+            if (res.isConfirmed) {
+              navigate("/infaq");
+            }
           });
         }
       });
