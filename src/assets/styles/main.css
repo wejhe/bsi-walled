@@ -209,8 +209,8 @@ nav {
 }
 
 .inputFieldCurrency {
-  background-color: #fafbfd;
-  border: none;
+  /* background-color: #fafbfd; */
+  /* border: none; */
   border-radius: 6px;
   height: 32px;
   padding: 6px 16px 8px 46px;
@@ -292,6 +292,21 @@ nav {
   box-shadow: 0 0px 40px rgb(0 0 0 / 0.04);
 }
 
+.cardInfaq {
+  display: flex;
+  flex-direction: column;
+  margin-top: 40px;
+  padding: 24px 32px; /* sebelumnya 40px 56px */
+  width: 40%;
+  gap: 20px; /* sebelumnya 32px */
+  background-color: white;
+  border-radius: 16px;
+  color: black;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 0px 40px rgb(0 0 0 / 0.04);
+}
+
 .inputGroupWithSpan {
   display: flex;
   width: calc(100% + 32px);
@@ -354,8 +369,8 @@ nav {
 .swal2-toast {
   border-radius: 8px;
   box-shadow: none !important;
-  border: 1px solid #F8BB86;
-  background-color: #FFFBF7 !important;
+  border: 1px solid #f8bb86;
+  background-color: #fffbf7 !important;
 }
 
 .modalButton {
@@ -365,6 +380,17 @@ nav {
   font-weight: bold;
   height: 46px;
   font-size: 16px;
+}
+
+.modalButtonFull {
+  margin-top: 0;
+  background-color: #0061ff;
+  border-radius: 6px;
+  color: white;
+  font-weight: bold;
+  height: 46px;
+  font-size: 16px;
+  width: 28.6em;
 }
 
 .modalButtonSecondary {
@@ -403,6 +429,69 @@ nav {
   position: relative;
 }
 
+.infaqHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.full-width-infaq {
+  width: 100% !important;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.inputAmount {
+  width: 100% !important;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width-infaq .primaryButton {
+  width: 100% !important;
+}
+
+.customAmountGroup .inputFieldCurrencyWrapper {
+  width: 100% !important;
+}
+
+.quickAmountGroup {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap; /* responsif kalau sempit */
+}
+
+.amountOption {
+  flex: 1 1 calc(25% - 9px); /* 4 kolom dengan gap 12px */
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: white;
+  color: #374151;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.amountOption.selected {
+  background-color: #f4fafe;
+  border: 1px solid #23a6f0;
+  color: #23a6f0;
+}
+
+@media (max-width: 500px) {
+  .amountOption {
+    flex: 1 1 calc(50% - 6px); /* 2 kolom */
+  }
+}
+
+.amountOption:hover {
+  background-color: #f3f4f6; /* hover abu-abu terang */
+}
+
 .wHideIcon {
   position: absolute;
   right: 0;
@@ -424,8 +513,7 @@ nav {
   left: 10px;
   top: 50%;
   transform: translateY(-50%);
-  cursor: pointer;
-  background-color: #fafbfd;
+  background-color: transparent;
   border: none;
   border-radius: 6px;
   color: black;
@@ -439,6 +527,7 @@ nav {
   width: 100%;
   justify-content: center;
   gap: 12px;
+  margin-bottom: 16px;
 }
 
 .wPinField {
@@ -456,4 +545,77 @@ nav {
   outline: 1px solid #0061ff;
   box-shadow: 0 0 12px rgba(0, 97, 255, 0.2);
   caret-color: transparent;
+}
+
+.downloadReceipt {
+  margin-top: 20px;
+  margin-bottom: -10px;
+  margin-left: 4px;
+  margin-right: 4px;
+  background-color: #0062ff0f;
+  border: none;
+  border-radius: 28px;
+  height: 56px;
+  width: 56px;
+  background-image: url("/download.svg");
+  background-repeat: no-repeat;
+  background-position: left 16px center;
+  cursor: pointer;
+}
+
+.shareReceipt {
+  margin-top: 20px;
+  margin-bottom: -10px;
+  margin-left: 4px;
+  margin-right: 4px;
+  background-color: #0062ff0f;
+  border: none;
+  border-radius: 28px;
+  height: 56px;
+  width: 56px;
+  background-image: url("/share.svg");
+  background-repeat: no-repeat;
+  background-position: left 16px center;
+  cursor: pointer;
+}
+
+.bounce {
+  animation-name: bounce;
+  animation-duration: 0.5s;
+  animation-delay: 0s;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateX(0px);
+    timing-function: ease-in;
+  }
+  37% {
+    transform: translateX(5px);
+    timing-function: ease-out;
+  }
+  55% {
+    transform: translateX(-5px);
+    timing-function: ease-in;
+  }
+  73% {
+    transform: translateX(4px);
+    timing-function: ease-out;
+  }
+  82% {
+    transform: translateX(-4px);
+    timing-function: ease-in;
+  }
+  91% {
+    transform: translateX(2px);
+    timing-function: ease-out;
+  }
+  96% {
+    transform: translateX(-2px);
+    timing-function: ease-in;
+  }
+  100% {
+    transform: translateX(0px);
+    timing-function: ease-in;
+  }
 }

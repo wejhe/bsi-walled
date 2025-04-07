@@ -6,15 +6,30 @@ import DropDown from "../components/DropDown";
 import ReactDOM from "react-dom/client";
 import Swal from "sweetalert2";
 import PinField from "react-pin-field";
-import { useState } from "react";
-import { isEmpty } from "../utils/validation";
+import { useState, useEffect, useRef } from "react";
+import { isEmpty, isPinComplete } from "../utils/validation";
 import InputCurrency from "./InputCurrency";
+import { formatCurrency } from "../utils/formatter";
+import { useNavigate } from "react-router-dom";
 
 const TopupForm = () => {
+  const navigate = useNavigate();
   const [pinInputValue, setPinInputValue] = useState("");
   const [pinIsEmpty, setPinIsEmpty] = useState(true);
+  const [pinIsComplete, setPinIsComplete] = useState(false);
 
+  const [topUpSource, setTopUpSource] = useState(
+    "Bank Syariah Indonesia (BSI)"
+  );
   const [topUpAmount, setTopUpAmount] = useState("");
+
+  const pinIsEmptyRef = useRef(pinIsEmpty);
+  const pinIsCompleteRef = useRef(pinIsComplete);
+
+  useEffect(() => {
+    pinIsEmptyRef.current = pinIsEmpty;
+    pinIsCompleteRef.current = pinIsComplete;
+  }, [pinIsEmpty, pinIsComplete]);
 
   const handleTopUpClick = () => {
     if (!topUpAmount || topUpAmount === "") {
@@ -28,8 +43,19 @@ const TopupForm = () => {
       });
     } else {
       Swal.fire({
-        title: "Transaction Pin",
-        html: "<p>Please enter your 6 digit transaction pin</p><br><br><div id='pinInputContainer'></div><br>",
+        title: "Confirmation",
+        html: `
+                <div style="text-align: left; font-size: 16px; line-height: 2.2; padding-bottom: 16px">
+                  <p>Top-Up Amount <span style="float: right; font-weight: bold;">Rp ${formatCurrency(
+                    topUpAmount
+                  )}</span></p>
+                  <p>Source<span style="float: right;">${topUpSource}</span></p>
+                </div>
+                <hr style="border-top: 1px solid #ccc;">
+                <br><p style="font-size: 16px">Please enter your 6 digit transaction pin to proceed</p>
+                <br><div id='pinInputContainer'></div>
+                <div id="pinErrorMessage" style="font-size: 16px; color: red; display: none;">&#9888; Error : Your pin is either empty or incomplete</div>
+              `,
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "CONFIRM",
@@ -55,33 +81,56 @@ const TopupForm = () => {
             />
           );
         },
+        preConfirm: () => {
+          if (pinIsEmptyRef.current || !pinIsCompleteRef.current) {
+            const errorMessageElement =
+              document.getElementById("pinErrorMessage");
+            errorMessageElement.style.display = "block";
+            errorMessageElement.classList.add("bounce");
+            setTimeout(function () {
+              errorMessageElement.classList.remove("bounce");
+            }, 1000);
+            return false;
+          }
+          return true;
+        },
       }).then((result) => {
         if (result.isConfirmed) {
           Swal.fire({
             title:
               '<span style="color: #4CAF50; font-weight: 600; padding:0; margin: 0;">Top-Up Success</span>',
             html: `
-                      <div style="text-align: left; font-size: 16px; line-height: 2.4; padding-top: 16px; padding-bottom: 16px">
-                        <p><strong>Amount</strong> <span style="float: right; font-weight: bold;">1.000.000</span></p>
-                        <p><strong>Transaction ID</strong> <span style="float: right;">338818239039011</span></p>
-                        <p><strong>Sender</strong> <span style="float: right;">11234001000</span></p>
-                        <p><strong>Recipient</strong> <span style="float: right;">1234005001</span></p>
-                        <p><strong>Description</strong><span style="float: right;"> Bayar hutang dan beli Bakso</span></p>
+                      <div style="text-align: left; font-size: 16px; line-height: 2.2; padding-bottom: 16px">
+                        <p>Amount<span style="float: right; font-weight: bold;">Rp ${formatCurrency(
+                          topUpAmount
+                        )}</span></p>
+                        <p>Transaction ID<span style="float: right;">338818239039011</span></p>
+                        <p>Sender<span style="float: right;">${topUpSource}</span></p>
+                        <p>Recipient<span style="float: right;">1234005001</span></p>
+                        <p>Note<span style="float: right;">Bayar hutang dan beli Bakso</span></p>
                       </div>
+                      <hr style="border-top: 1px solid #ccc;">
+                      <button class="shareReceipt"></button>
+                      <button class="downloadReceipt"></button>
                     `,
             icon: "success",
-            showCancelButton: true,
-            confirmButtonText: "PRINT",
-            cancelButtonText: "DISMISS",
+            confirmButtonText: "CONTINUE",
             customClass: {
               popup: "modalRadius",
-              confirmButton: "modalButton",
-              cancelButton: "modalButtonSecondary",
+              confirmButton: "modalButtonFull",
             },
+          }).then((res) => {
+            if (res.isConfirmed) {
+              navigate("/infaq");
+            }
           });
         }
       });
     }
+  };
+
+  const handleSourceChange = (e) => {
+    setTopUpSource(e.target.selectedOptions[0].label);
   };
 
   const handleInputChange = (value) => {
@@ -91,6 +140,7 @@ const TopupForm = () => {
   const handlePinChange = (value) => {
     setPinInputValue(value);
     setPinIsEmpty(isEmpty(value));
+    setPinIsComplete(isPinComplete(value));
   };
 
   return (
@@ -114,6 +164,7 @@ const TopupForm = () => {
                 label: "Bank Rakyat Indonesia (BRI)",
               },
             ]}
+            onChange={handleSourceChange}
           />
         </div>
         <div className="inputGroupWithSpan">

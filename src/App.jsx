@@ -7,6 +7,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import { useLocation } from "react-router-dom";
+import InfaqPage from "./pages/InfaqPage";
 
 function App() {
   const location = useLocation();
@@ -22,6 +23,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/topup" element={<TopupPage />} />
         <Route path="/transfer" element={<TransferPage />} />
+        <Route path="/infaq" element={<InfaqPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
