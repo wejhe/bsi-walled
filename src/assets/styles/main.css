@@ -406,7 +406,7 @@ nav {
 .transactionTableLayout {
   display: flex;
   flex-direction: column;
-  padding: 40px 128px;
+  padding: 0px 128px;
 }
 
 .tableContainer {
