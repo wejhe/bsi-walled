@@ -5,9 +5,9 @@ import MainInfoLayout from "../layouts/MainInfoLayout";
 import AccountNumber from "../components/AccountNumber";
 import AccountInfo from "../components/AccountInfo";
 import BodyLayout from "../layouts/BodyLayout";
-import TransactionTableLayout from "../layouts/TransactionTableLayout";
 import { Helmet } from "react-helmet";
-import TransactionTable from "../components/TransactionTable";
+import ChartLayout from "../layouts/ChartLayout";
+import PieChart from "../components/PieChart";
 
 const DashboardPage = () => {
   return (
@@ -24,9 +24,9 @@ const DashboardPage = () => {
           <AccountNumber />
           <AccountInfo />
         </MainInfoLayout>
-        <TransactionTableLayout>
-          <TransactionTable />
-        </TransactionTableLayout>
+        <ChartLayout>
+          <PieChart />
+        </ChartLayout>
       </BodyLayout>
     </>
   );

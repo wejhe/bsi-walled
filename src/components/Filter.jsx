@@ -1,6 +1,6 @@
-const DropDown = ({ options, onChange }) => {
+const Filter = ({ options, onChange }) => {
   return (
-    <select className="dropdownInput" onChange={onChange}>
+    <select className="dropdownFilter" onChange={onChange}>
       {options.map((option) => (
         <option key={option.value} value={option.value}>
           {option.label}
@@ -10,4 +10,4 @@ const DropDown = ({ options, onChange }) => {
   );
 };
 
-export default DropDown;
+export default Filter;

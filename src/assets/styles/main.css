@@ -629,3 +629,49 @@ nav {
     timing-function: ease-in;
   }
 }
+
+.chartLayout {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 128px;
+}
+
+.chartContainer {
+  padding: 40px;
+  background-color: white;
+  border-radius: 16px;
+  height: 80px;
+  color: black;
+  box-shadow: 0 0px 40px rgb(0 0 0 / 0.04);
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdownFilter {
+  background-color: white;
+  border: 1px solid #D0D5DD;
+  border-radius: 6px;
+  height: 46px;
+  font-size: 16px;
+  padding: 0px 64px 0px 16px;
+  width: auto;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("/dropdown.svg");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+}
+
+.dropdownFilter:focus {
+  outline: none;
+}
+
+.chartTitle {
+  font-weight: bold;
+  font-size: 24px;
+}
