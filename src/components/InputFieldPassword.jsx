@@ -7,6 +7,8 @@ const InputFieldPassword = ({
   onChange,
   onClick,
   isVisible,
+  value,
+  name,
 }) => {
   return (
     <>
@@ -17,6 +19,8 @@ const InputFieldPassword = ({
           type={type}
           placeholder={placeholder}
           onChange={onChange}
+          value={value}
+          name={name}
         />
         <button className="wHideIcon" onClick={onClick}>
           {isVisible ? (

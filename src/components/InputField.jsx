@@ -1,4 +1,4 @@
-const InputField = ({ type, placeholder, width, onChange }) => {
+const InputField = ({ type, placeholder, width, onChange, value = "", name = "" }) => {
   return (
     <input
       style={{ width: width }}
@@ -6,6 +6,8 @@ const InputField = ({ type, placeholder, width, onChange }) => {
       type={type}
       placeholder={placeholder}
       onChange={onChange}
+      value={value}
+      name={name}
     />
   );
 };
