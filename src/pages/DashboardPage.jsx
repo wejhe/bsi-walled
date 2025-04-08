@@ -7,7 +7,8 @@ import AccountInfo from "../components/AccountInfo";
 import BodyLayout from "../layouts/BodyLayout";
 import { Helmet } from "react-helmet";
 import ChartLayout from "../layouts/ChartLayout";
-import PieChart from "../components/PieChart";
+import TransactionPieChart from "../components/TransactionPieChart";
+import TransactionBarChart from "../components/TransactionBarChart";
 
 const DashboardPage = () => {
   return (
@@ -25,7 +26,10 @@ const DashboardPage = () => {
           <AccountInfo />
         </MainInfoLayout>
         <ChartLayout>
-          <PieChart />
+          <TransactionPieChart />
+        </ChartLayout>
+        <ChartLayout>
+          <TransactionBarChart />
         </ChartLayout>
       </BodyLayout>
     </>
