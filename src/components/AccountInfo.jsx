@@ -29,6 +29,12 @@ const AccountInfo = () => {
       </div>
       <div className="accaction">
         <div className="accactionbtn">
+          <a className="clickableicon" href="/history">
+            <img src={topup} />
+          </a>
+          Top-Up
+        </div>
+        <div className="accactionbtn">
           <a className="clickableicon" href="/topup">
             <img src={topup} />
           </a>
