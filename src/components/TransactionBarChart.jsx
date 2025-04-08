@@ -6,7 +6,7 @@ const TransactionBarChart = () => {
     <>
       <div className="chartContainer">
         <div className="chartHeader">
-          <p className="chartTitle">Spending vs Income Comparison</p>
+          <p className="chartTitle">Income vs Spending Comparison</p>
           <Filter
             options={[
               {
@@ -39,8 +39,8 @@ const TransactionBarChart = () => {
               },
             ]}
             series={[
-              { data: [4, 3, 5, 1, 6, 3] },
-              { data: [1, 6, 3, 4, 3, 5] },
+              { data: [2, 5, 3, 4, 2, 6], label: "Income", color: "#92CF96"},
+              { data: [4, 3, 5, 1, 6, 3], label: "Spending", color: "#0061FF"},
             ]}
             height={300}
             grid={{ horizontal: true }}
