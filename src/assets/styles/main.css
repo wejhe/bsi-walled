@@ -640,7 +640,6 @@ nav {
   padding: 40px;
   background-color: white;
   border-radius: 16px;
-  height: 80px;
   color: black;
   box-shadow: 0 0px 40px rgb(0 0 0 / 0.04);
 }
@@ -653,7 +652,7 @@ nav {
 
 .dropdownFilter {
   background-color: white;
-  border: 1px solid #D0D5DD;
+  border: 1px solid #d0d5dd;
   border-radius: 6px;
   height: 46px;
   font-size: 16px;
@@ -671,7 +670,51 @@ nav {
   outline: none;
 }
 
+.chartBody {
+  padding-top: 24px;
+  width: 100%;
+}
+
 .chartTitle {
   font-weight: bold;
   font-size: 24px;
+}
+
+.pieChartDivider {
+  display: flex;
+  justify-content: space-around;
+}
+
+.pieChart {
+  display: flex;
+  justify-content: center;
+  width: 30%;
+  background-color: violet;
+}
+
+.recentTransactionHistory {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 70%;
+}
+
+.recentTransactionContainer {
+  background-color: white;
+  border-radius: 16px;
+  border: 1px solid #d0d5dd;
+  width: 100%;
+}
+
+.miniTableTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 48px;
+  background-color: #fafbfd;
+  border-radius: 16px 16px 0px 0px;
+  color: #667085;
+  font-weight: bold;
+  font-size: 14px;
 }
