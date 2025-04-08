@@ -683,13 +683,19 @@ nav {
 .pieChartDivider {
   display: flex;
   justify-content: space-around;
+  align-items: center; /* tambahkan ini */
 }
 
 .pieChart {
   display: flex;
   justify-content: center;
   width: 30%;
-  background-color: violet;
+}
+
+.pieChart svg g[transform^="translate"] {
+  transform: translate(125px, 125px); /* karena dari 77.5 → 125, selisihnya 47.5 */
+   transform-box: fill-box;
+  transform-origin: center;
 }
 
 .recentTransactionHistory {
