@@ -18,6 +18,16 @@ const TopupForm = () => {
   const [pinIsEmpty, setPinIsEmpty] = useState(true);
   const [pinIsComplete, setPinIsComplete] = useState(false);
 
+  // FORM DATA Dhito testing value
+  const [formData, setFormData] = useState({
+    note: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
   const [topUpSource, setTopUpSource] = useState(
     "Bank Syariah Indonesia (BSI)"
   );
@@ -178,7 +188,14 @@ const TopupForm = () => {
         </div>
         <div className="inputGroupWithSpan">
           <InputSpan text="&#128221; Note" width="25%" />
-          <InputField type="text" placeholder="Top-Up Note" width="75%" />
+          <InputField
+            type="text"
+            name="note"
+            value={formData.note}
+            placeholder="Top-Up Note"
+            width="75%"
+            onChange={handleChange}
+          />
         </div>
       </div>
       <PrimaryButton

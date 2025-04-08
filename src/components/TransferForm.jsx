@@ -12,7 +12,6 @@ import InputCurrency from "./InputCurrency";
 import { formatCurrency } from "../utils/formatter";
 import { useNavigate } from "react-router-dom";
 
-
 const TransferForm = () => {
   const navigate = useNavigate();
   const [pinInputValue, setPinInputValue] = useState("");
@@ -24,6 +23,16 @@ const TransferForm = () => {
 
   const pinIsEmptyRef = useRef(pinIsEmpty);
   const pinIsCompleteRef = useRef(pinIsComplete);
+
+  // FORM DATA Dhito testing value
+  const [formData, setFormData] = useState({
+    note: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   useEffect(() => {
     pinIsEmptyRef.current = pinIsEmpty;
@@ -177,7 +186,14 @@ const TransferForm = () => {
         </div>
         <div className="inputGroupWithSpan">
           <InputSpan text="&#128221; Note" width="25%" />
-          <InputField type="text" placeholder="Transfer Note" width="75%" />
+          <InputField
+            type="text"
+            placeholder="Transfer Note"
+            width="75%"
+            name="note"
+            value={formData.note}
+            onChange={handleChange}
+          />
         </div>
       </div>
       <PrimaryButton
