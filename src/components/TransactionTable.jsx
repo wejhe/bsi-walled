@@ -1,7 +1,14 @@
 import DataTable from "react-data-table-component";
 import InputField from "../components/InputField";
+import { useState } from "react";
 
 const TransactionTable = () => {
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleSearch = (e) => {
+    setSearchValue(e.target.value);
+  };
+
   const customStyles = {
     headCells: {
       style: {
@@ -62,22 +69,83 @@ const TransactionTable = () => {
   const data = [
     {
       id: 1,
-      datetime: "Beetlejuice",
-      type: "1988",
+      datetime: "10/11/2023",
+      type: "Top Up",
+      fromto: "Your Account",
+      description: "Anjay",
+      amount: "50.000",
+    },
+    {
+      id: 2,
+      datetime: "11/11/2023",
+      type: "Top Up",
+      fromto: "Your Account",
+      description: "Anjay",
+      amount: "50.000",
+    },
+    {
+      id: 3,
+      datetime: "12/11/2023",
+      type: "Transfer",
       fromto: "100",
       description: "Anjay",
       amount: "100",
     },
+    {
+      id: 4,
+      datetime: "13/11/2023",
+      type: "Transfer",
+      fromto: "100",
+      description: "Anjay",
+      amount: "100",
+    },
+    {
+      id: 5,
+      datetime: "14/11/2023",
+      type: "Transfer",
+      fromto: "100",
+      description: "Anjay",
+      amount: "100",
+    },
+    {
+      id: 6,
+      datetime: "15/11/2023",
+      type: "Top up",
+      fromto: "Your Account",
+      description: "Anjay",
+      amount: "100",
+    },
+    {
+      id: 7,
+      datetime: "16/11/2023",
+      type: "Top up",
+      fromto: "Your Account",
+      description: "Testing Search",
+      amount: "100",
+    },
   ];
+
+  const filteredData = data.filter((item) =>
+    [item.description, item.type, item.fromto, item.amount, item.datetime].some((val) =>
+      val.toLowerCase().includes(searchValue.toLowerCase())
+    )
+  );
 
   return (
     <div className="tableContainer">
-      <InputField type="text" placeholder="&#128270;&nbsp; Search transaction history by description" width="calc(100% - 64px + 32px)" />
-      <br /><br />
+      <InputField
+        type="text"
+        placeholder="&#128270;&nbsp; Search transaction history by description"
+        width="calc(100% - 64px + 32px)"
+        value={searchValue}
+        onChange={handleSearch}
+      />
+      <br />
+      <br />
       <DataTable
         pagination
         columns={columns}
-        data={data}
+        data={filteredData}
         customStyles={customStyles}
       />
     </div>

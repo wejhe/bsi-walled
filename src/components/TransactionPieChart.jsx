@@ -1,6 +1,7 @@
 import Filter from "./Filter";
 import { PieChart } from "@mui/x-charts/PieChart";
 import RecentTransaction from "./RecentTransaction";
+import { useEffect, useRef } from "react";
 
 const TransactionPieChart = () => {
   return (
@@ -36,8 +37,8 @@ const TransactionPieChart = () => {
                 series={[
                   {
                     data: [
-                      { id: 0, value: 80, color: "#0061ff", label: "A" },
-                      { id: 1, value: 20, color: "#D0D5DD", label: "B" },
+                      { id: 0, value: 80, color: "#0061ff" },
+                      { id: 1, value: 20, color: "#D0D5DD" },
                     ],
                     innerRadius: 80,
                     outerRadius: 100,
@@ -46,8 +47,8 @@ const TransactionPieChart = () => {
                     startAngle: 0,
                   },
                 ]}
-                /* width={200}
-                height={200} */
+                width={250}
+                height={250}
               />
             </div>
             <div className="recentTransactionHistory">
