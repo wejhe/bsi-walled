@@ -11,6 +11,19 @@ export const promptCreatePIN = () => {
     const handlePinChange = (field) => (value) => {
       if (field === "pin") pinValue = value;
       if (field === "confirmPin") confirmPinValue = value;
+
+      // Real-time validation
+      const helperElement = document.getElementById("realtimePinHelper");
+
+      if (pinValue && confirmPinValue) {
+        if (pinValue !== confirmPinValue) {
+          helperElement.style.display = "block";
+        } else {
+          helperElement.style.display = "none";
+        }
+      } else {
+        helperElement.style.display = "none";
+      }
     };
 
     Swal.fire({
@@ -26,6 +39,9 @@ export const promptCreatePIN = () => {
         </div>
         <div id="pinErrorMessage" style="font-size: 16px; color: red; display: none;">
           &#9888; Error: PIN must be filled with number only and matched
+        </div>
+        <div id="realtimePinHelper" style="font-size: 16px; color: red; display: none;">
+          &#9888; Error: PIN is not matched
         </div>
       `,
       showCancelButton: true,
