@@ -6,6 +6,7 @@ import logo from "/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import useAuthStore from "../stores/authStore";
 
 import {
   isValidEmail,
@@ -77,24 +78,69 @@ const RegisterForm = () => {
   const handleRegister = async () => {
     if (!validateForm()) return;
 
-    const pin = await PromptCreatePIN();
+    try{
+      const response = await fetch("http://localhost:8080/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          fullName: formData.name,
+          password: formData.password,
+          phoneNumber: formData.phone,
+          // avatar: formData.avatar
+        })
+      });
 
-    if (!pin) {
-      console.log("User cancelled PIN creation.");
-      return;
+      const data = await response.json();
+      if(data.responseCode === 201){
+        const {accessToken, refreshToken} = data.data;
+        const setTokens = useAuthStore.getState().setTokens;
+        setTokens({accessToken, refreshToken});
+
+        const pin = await PromptCreatePIN();
+
+        if (!pin) {
+          console.log("User cancelled PIN creation.");
+          return;
+        }
+
+        const pinRes = await fetch( "http://localhost:8080/auth/set-pin" ,{
+          method: "POST",
+          headers: {
+            "Content-Type" : "application/json",
+            Authorization: `Bearer ${accessToken}`
+          },
+          body: JSON.stringify({
+            pin: pin,
+          })
+        });
+
+        const pinData = await pinRes.json();
+        if(pinRes.ok){
+          Swal.fire({
+            icon: "success",
+            title: "PIN Created!",
+            text: `Your PIN has been created successfully`,
+          });
+          navigate("/dashboard");
+        } else{
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: pinData.message,
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: "An error occurred during registration. Please try again.",
+      });
     }
-
-    console.log("PIN berhasil dibuat:", pin);
-
-    // lanjut proses registrasi di sini
-    // bisa dikirim ke backend atau disimpan sementara
-    Swal.fire({
-      icon: "success",
-      title: "Account Registered!",
-      text: `Your account has been created with PIN ${pin}`,
-    });
-
-    navigate("/dashboard"); // contoh redirect
   };
 
   return (
