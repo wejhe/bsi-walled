@@ -295,10 +295,10 @@ nav {
 .cardInfaq {
   display: flex;
   flex-direction: column;
-  margin-top: 40px;
-  padding: 24px 32px; /* sebelumnya 40px 56px */
+  margin-top: 64px;
+  padding: 40px; /* sebelumnya 40px 56px */
   width: 40%;
-  gap: 20px; /* sebelumnya 32px */
+  gap: 32px; /* sebelumnya 32px */
   background-color: white;
   border-radius: 16px;
   color: black;
@@ -380,6 +380,7 @@ nav {
   font-weight: bold;
   height: 46px;
   font-size: 16px;
+  cursor: pointer;
 }
 
 .modalButtonFull {
@@ -391,6 +392,7 @@ nav {
   height: 46px;
   font-size: 16px;
   width: 28.6em;
+  cursor: pointer;
 }
 
 .modalButtonSecondary {
@@ -401,6 +403,7 @@ nav {
   font-weight: bold;
   height: 46px;
   font-size: 16px;
+  cursor: pointer;
 }
 
 .wPinField {
@@ -456,6 +459,12 @@ nav {
   width: 100% !important;
   display: flex;
   flex-direction: column;
+  gap: 16px;
+}
+
+.infaqButtonGroup {
+  width: 100% !important;
+  display: flex;
   gap: 16px;
 }
 
@@ -533,10 +542,6 @@ nav {
 }
 
 #pinInputContainer {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  gap: 12px;
   margin-bottom: 16px;
 }
 

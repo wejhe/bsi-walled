@@ -145,7 +145,6 @@ const InfaqForm = () => {
 
   return (
     <>
-      {/* <BalInfo /> */}
       <div className="infaqHeader">
         <InfaqImage />
         <InfaqTitle />
@@ -177,7 +176,7 @@ const InfaqForm = () => {
             />
           </div>
         </div>
-        <div className="inputAmount">
+        <div className="infaqButtonGroup">
           <PrimaryButton
             text="CONFIRM"
             onClick={handleTopUpClick}

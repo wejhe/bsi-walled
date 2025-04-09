@@ -107,27 +107,11 @@ const TransactionTable = () => {
       description: "Anjay",
       amount: "100",
     },
-    {
-      id: 6,
-      datetime: "15/11/2023",
-      type: "Top up",
-      fromto: "Your Account",
-      description: "Anjay",
-      amount: "100",
-    },
-    {
-      id: 7,
-      datetime: "16/11/2023",
-      type: "Top up",
-      fromto: "Your Account",
-      description: "Testing Search",
-      amount: "100",
-    },
   ];
 
   const filteredData = data.filter((item) =>
-    [item.description, item.type, item.fromto, item.amount, item.datetime].some((val) =>
-      val.toLowerCase().includes(searchValue.toLowerCase())
+    [item.description, item.type, item.fromto, item.amount, item.datetime].some(
+      (val) => val.toLowerCase().includes(searchValue.toLowerCase())
     )
   );
 
@@ -135,7 +119,7 @@ const TransactionTable = () => {
     <div className="tableContainer">
       <InputField
         type="text"
-        placeholder="&#128270;&nbsp; Search transaction history by description"
+        placeholder="&#128270;&nbsp; Search transaction history by description, amount, etc."
         width="calc(100% - 64px + 32px)"
         value={searchValue}
         onChange={handleSearch}

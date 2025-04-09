@@ -40,11 +40,14 @@ const RegisterForm = () => {
 
   const validateForm = () => {
     const validations = {
-      name: !isEmpty(formData.name),
+      complete:
+        !isEmpty(formData.name) &&
+        !isEmpty(formData.email) &&
+        !isEmpty(formData.password) &&
+        !isEmpty(formData.avatar),
       email: isValidEmail(formData.email),
       password: isValidPassword(formData.password),
       phone: isValidPhone(formData.phone),
-      avatar: !isEmpty(formData.avatar),
     };
 
     const errors = Object.entries(validations).filter(([, valid]) => !valid);
@@ -52,12 +55,11 @@ const RegisterForm = () => {
     if (errors.length > 0) {
       const field = errors[0][0];
       const messages = {
-        name: "Please fill out all of the field before proceeding",
+        complete: "Please fill out all of the field before proceeding",
         email: "Please enter a valid email address before proceeding",
         password:
           "Your password must be a combination of letters and numbers with minimum 8 characters",
         phone: "Please enter a valid phone number before proceeding",
-        avatar: "Please fill out all of the field before proceeding",
       };
 
       Swal.fire({
@@ -86,15 +88,13 @@ const RegisterForm = () => {
 
     console.log("PIN berhasil dibuat:", pin);
 
-    // lanjut proses registrasi di sini
-    // bisa dikirim ke backend atau disimpan sementara
     Swal.fire({
       icon: "success",
       title: "Account Registered!",
       text: `Your account has been created with PIN ${pin}`,
     });
 
-    navigate("/dashboard"); // contoh redirect
+    navigate("/dashboard");
   };
 
   return (
