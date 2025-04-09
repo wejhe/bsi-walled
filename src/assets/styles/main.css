@@ -533,10 +533,6 @@ nav {
 }
 
 #pinInputContainer {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  gap: 12px;
   margin-bottom: 16px;
 }
 
