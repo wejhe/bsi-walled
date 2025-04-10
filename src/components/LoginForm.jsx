@@ -6,12 +6,15 @@ import { useState } from "react";
 import { isValidEmail, isEmpty, isValidPassword } from "../utils/validation";
 import InputFieldPassword from "./InputFieldPassword";
 import Swal from "sweetalert2";
+import apiconfig from "../utils/apiconfig";
+import useAuthStore from "../stores/authStore";
 import promptCreatePIN from "./PromptCreatePIN";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [hasPIN, setHasPIN] = useState(false);
+  const [hasPIN, setHasPIN] = useState(true);
+  const { setTokens } = useAuthStore();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -34,9 +37,7 @@ const LoginForm = () => {
 
     setFormError((prev) => ({
       ...prev,
-      [`${name}IsEmpty`]: isEmpty(value),
       ...(name === "email" && { emailIsValid: isValidEmail(value) }),
-      ...(name === "password" && { passwordIsEmpty: isEmpty(value) }),
     }));
   };
 
@@ -60,27 +61,35 @@ const LoginForm = () => {
       showToast("Please fill out all of the field before proceeding");
     } else if (!formError.emailIsValid) {
       showToast("Please enter a valid email address before proceeding");
-    } else if (formError.passwordIsEmpty) {
-      showToast("Please fill password before proceeding");
-    } else if (!hasPIN) {
-      const pin = await promptCreatePIN();
-
-      if (pin) {
-        Swal.fire({
-          icon: "success",
-          title: "Account Registered!",
-          text: `Your account has been created with PIN ${pin}`,
-        });
-
-        // Update state PIN (misalnya kamu mau simpan di localStorage, backend, dll)
-        setHasPIN(true);
-
-        navigate("/dashboard");
-      } else {
-        showToast("PIN creation was cancelled");
-      }
     } else {
-      navigate("/dashboard");
+      const endpoint = `${apiconfig.BASE_URL}/auth/login`;
+      fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.responseCode === 200) {
+            const {accessToken, refreshToken} = data.data;
+            setTokens({accessToken, refreshToken});
+            navigate("/dashboard");
+          } else if (data.responseCode === 401) {
+            showToast("The email and password you entered is incorrect");
+          } else {
+            showToast("An unexpected error occurred");
+          }
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
     }
   };
 
