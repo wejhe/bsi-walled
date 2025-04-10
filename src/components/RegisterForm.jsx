@@ -1,10 +1,13 @@
 import InputField from "./InputField";
 import PrimaryButton from "./PrimaryButton";
 import InputFieldPassword from "./InputFieldPassword";
+import PromptCreatePIN from "./PromptCreatePIN";
 import logo from "/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import apiconfig from "../utils/apiconfig";
+
 import {
   isValidEmail,
   isEmpty,
@@ -14,152 +17,211 @@ import {
 
 const RegisterForm = () => {
   const navigate = useNavigate();
-  const [nameInputValue, setNameInputValue] = useState("");
-  const [emailInputValue, setEmailInputValue] = useState("");
-  const [passwordInputValue, setPasswordInputValue] = useState("");
-  const [phoneInputValue, setPhoneInputValue] = useState("");
-  const [avatarInputValue, setAvatarInputValue] = useState("");
-  const [nameIsEmpty, setNameIsEmpty] = useState(true);
-  const [emailIsValid, setEmailIsValid] = useState(false);
-  const [emailIsEmpty, setEmailIsEmpty] = useState(true);
-  const [passwordIsValid, setPasswordIsValid] = useState(false);
-  const [passwordIsEmpty, setPasswordIsEmpty] = useState(true);
-  const [phoneIsValid, setPhoneIsValid] = useState(false);
-  const [phoneIsEmpty, setPhoneIsEmpty] = useState(true);
-  const [avatarIsEmpty, setAvatarIsEmpty] = useState(true);
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  const handleNameChange = (e) => {
-    setNameInputValue(e.target.value);
-    setNameIsEmpty(isEmpty(e.target.value));
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    phone: "",
+    avatar: "",
+  });
+
+  const [visibility, setVisibility] = useState({
+    password: false,
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleEmailChange = (e) => {
-    setEmailInputValue(e.target.value);
-    setEmailIsValid(isValidEmail(e.target.value));
-    setEmailIsEmpty(isEmpty(e.target.value));
+  const handlePasswordVisibility = () => {
+    setVisibility((prev) => ({ ...prev, password: !prev.password }));
   };
 
-  const handlePasswordChange = (e) => {
-    setPasswordInputValue(e.target.value);
-    setPasswordIsValid(isValidPassword(e.target.value));
-    setPasswordIsEmpty(isEmpty(e.target.value));
+  const showToast = (message) => {
+    Swal.fire({
+      toast: true,
+      position: "bottom-start",
+      icon: "warning",
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+    });
   };
 
-  const handleShowPassword = () => {
-    setIsPasswordVisible(!isPasswordVisible);
-  };
+  const handleSetPin = async (accessToken) => {
+    const pin = await PromptCreatePIN();
 
-  const handlePhoneChange = (e) => {
-    setPhoneInputValue(e.target.value);
-    setPhoneIsValid(isValidPhone(e.target.value));
-    setPhoneIsEmpty(isEmpty(e.target.value));
-  };
+    if (!pin) {
+      return;
+    } else if (pin) {
+      const endpoint = `${apiconfig.BASE_URL}/auth/set-pin`;
+      fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+        body: JSON.stringify({
+          pin: pin,
+        }),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          Swal.fire({
+            icon: "success",
+            title: "Register Success",
+            text: `Your account has been created!`,
+          });
 
-  const handleAvatarChange = (e) => {
-    setAvatarInputValue(e.target.value);
-    setAvatarIsEmpty(isEmpty(e.target.value));
-  };
-
-  const isAnyEmpty = () =>
-    nameIsEmpty ||
-    emailIsEmpty ||
-    passwordIsEmpty ||
-    phoneIsEmpty ||
-    avatarIsEmpty;
-
-  const handleRegister = () => {
-    if (isAnyEmpty()) {
-      Swal.fire({
-        toast: true,
-        position: "bottom-start",
-        icon: "warning",
-        title: "Please fill out all of the field before proceeding",
-        showConfirmButton: false,
-        timer: 3000,
-      });
-    } else if (!emailIsValid) {
-      Swal.fire({
-        toast: true,
-        position: "bottom-start",
-        icon: "warning",
-        title: "Please enter a valid email address before proceeding",
-        showConfirmButton: false,
-        timer: 3000,
-      });
-    } else if (!passwordIsValid) {
-      Swal.fire({
-        toast: true,
-        position: "bottom-start",
-        icon: "warning",
-        title: "Your password must be a combination of letters and numbers with minimum 8 characters",
-        showConfirmButton: false,
-        timer: 3000,
-      });
-    } else if (!phoneIsValid) {
-      Swal.fire({
-        toast: true,
-        position: "bottom-start",
-        icon: "warning",
-        title: "Please enter a valid phone number before proceeding",
-        showConfirmButton: false,
-        timer: 3000,
-      });
-    } else {
-      navigate("/dashboard");
+          navigate("/dashboard");
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
     }
   };
 
+  const validateForm = () => {
+    const validations = {
+      complete:
+        !isEmpty(formData.name) &&
+        !isEmpty(formData.email) &&
+        !isEmpty(formData.password) &&
+        !isEmpty(formData.avatar),
+      email: isValidEmail(formData.email),
+      password: isValidPassword(formData.password),
+      phone: isValidPhone(formData.phone),
+    };
+
+    const errors = Object.entries(validations).filter(([, valid]) => !valid);
+
+    if (errors.length > 0) {
+      const field = errors[0][0];
+      const messages = {
+        complete: "Please fill out all of the field before proceeding",
+        email: "Please enter a valid email address before proceeding",
+        password:
+          "Your password must be a combination of letters and numbers with minimum 8 characters",
+        phone: "Please enter a valid phone number before proceeding",
+      };
+
+      showToast(messages[field]);
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleRegister = async () => {
+    if (!validateForm()) return;
+
+    const endpoint_signup = `${apiconfig.BASE_URL}/auth/signup`;
+    fetch(endpoint_signup, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: formData.email,
+        fullName: formData.name,
+        password: formData.password,
+        phoneNumber: formData.phone,
+      }),
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        if (data.responseCode === 201) {
+          const endpoint_wallet = `${apiconfig.BASE_URL}/api/wallets`;
+          let accessToken = data.data.accessToken;
+          fetch(endpoint_wallet, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+          })
+            .then((response) => {
+              return response.json();
+            })
+            .then((data) => {
+              if (data.responseCode === 201) {
+                handleSetPin(accessToken)
+              }
+            })
+            .catch((error) => {
+              console.error("Error: ", error);
+            });
+        }
+      })
+      .catch((error) => {
+        console.error("Error: ", error);
+      });
+  };
+
   return (
-    <>
-      <div className="forms">
-        <img className="authLogo" src={logo} />
-        <div className="tighterGroup">
-          <InputField
-            type="text"
-            placeholder="Full Name"
-            width="64%"
-            onChange={handleNameChange}
-          />
-          <InputField
-            type="text"
-            placeholder="Email"
-            width="64%"
-            onChange={handleEmailChange}
-          />
-          <InputFieldPassword
-            type={isPasswordVisible ? "text" : "password"}
-            placeholder="Password"
-            width="100%"
-            onChange={handlePasswordChange}
-            onClick={handleShowPassword}
-            isVisible={isPasswordVisible}
-          />
-          <InputField
-            type="number"
-            placeholder="Phone Number"
-            width="64%"
-            onChange={handlePhoneChange}
-          />
-          <InputField
-            type="text"
-            placeholder="Avatar URL"
-            width="64%"
-            onChange={handleAvatarChange}
-          />
-        </div>
-        <div className="tighterGroup">
-          <PrimaryButton
-            text="REGISTER"
-            onClick={handleRegister}
-            width="calc(64% + 32px)"
-          />
-          <p>
-            Already have an account?<a href="/"> Login Now</a>
-          </p>
-        </div>
+    <div className="forms">
+      <img className="authLogo" src={logo} />
+      <div className="tighterGroup">
+        <InputField
+          type="text"
+          name="name"
+          placeholder="Full Name"
+          width="64%"
+          value={formData.name}
+          onChange={handleChange}
+        />
+        <InputField
+          type="text"
+          name="email"
+          placeholder="Email"
+          width="64%"
+          value={formData.email}
+          onChange={handleChange}
+        />
+        <InputFieldPassword
+          type={visibility.password ? "text" : "password"}
+          name="password"
+          placeholder="Password"
+          width="100%"
+          value={formData.password}
+          onChange={handleChange}
+          onClick={handlePasswordVisibility}
+          isVisible={visibility.password}
+        />
+        <InputField
+          type="number"
+          name="phone"
+          placeholder="Phone Number"
+          width="64%"
+          value={formData.phone}
+          onChange={handleChange}
+        />
+        <InputField
+          type="text"
+          name="avatar"
+          placeholder="Avatar URL"
+          width="64%"
+          value={formData.avatar}
+          onChange={handleChange}
+        />
       </div>
-    </>
+      <div className="tighterGroup">
+        <PrimaryButton
+          text="REGISTER"
+          onClick={handleRegister}
+          width="calc(64% + 32px)"
+        />
+        <p>
+          Already have an account?<a href="/"> Login Now</a>
+        </p>
+      </div>
+    </div>
   );
 };
 

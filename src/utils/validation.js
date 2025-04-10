@@ -20,4 +20,9 @@ export const isValidPhone = (phone) => {
 
 export const isPinComplete = (pin) => {
   return pin.length == 6;
-}
+};
+
+export const isPinNumberOnly = (pin) => {
+  const pattern = /^\d{6}$/;
+  return pattern.test(pin);
+};

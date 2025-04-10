@@ -3,57 +3,92 @@ import PrimaryButton from "./PrimaryButton";
 import logo from "/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { isValidEmail, isEmpty } from "../utils/validation";
+import { isValidEmail, isEmpty, isValidPassword } from "../utils/validation";
 import InputFieldPassword from "./InputFieldPassword";
 import Swal from "sweetalert2";
+import apiconfig from "../utils/apiconfig";
+import useAuthStore from "../stores/authStore";
+import promptCreatePIN from "./PromptCreatePIN";
 
 const LoginForm = () => {
   const navigate = useNavigate();
-  const [emailInputValue, setEmailInputValue] = useState("");
-  const [passwordInputValue, setPasswordInputValue] = useState("");
-  const [emailIsValid, setEmailIsValid] = useState(false);
-  const [emailIsEmpty, setEmailIsEmpty] = useState(true);
-  const [passwordIsEmpty, setPasswordIsEmpty] = useState(true);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const { setTokens } = useAuthStore();
 
-  const handleEmailChange = (e) => {
-    setEmailInputValue(e.target.value);
-    setEmailIsValid(isValidEmail(e.target.value));
-    setEmailIsEmpty(isEmpty(e.target.value));
-  };
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
 
-  const handlePasswordChange = (e) => {
-    setPasswordInputValue(e.target.value);
-    setPasswordIsEmpty(isEmpty(e.target.value));
-  };
+  const [formError, setFormError] = useState({
+    emailIsValid: false,
+    emailIsEmpty: false,
+    passwordIsEmpty: false,
+  });
 
   const handleShowPassword = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
-  const isAnyEmpty = () => emailIsEmpty || passwordIsEmpty;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
-  const handleLogin = () => {
+    setFormError((prev) => ({
+      ...prev,
+      ...(name === "email" && { emailIsValid: isValidEmail(value) }),
+    }));
+  };
+
+  const isAnyEmpty = () => {
+    return formData.email === "" || formData.password === "";
+  };
+
+  const showToast = (message) => {
+    Swal.fire({
+      toast: true,
+      position: "bottom-start",
+      icon: "warning",
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  };
+
+  const handleLogin = async () => {
     if (isAnyEmpty()) {
-      Swal.fire({
-        toast: true,
-        position: "bottom-start",
-        icon: "warning",
-        title: "Please fill out all of the field before proceeding",
-        showConfirmButton: false,
-        timer: 3000,
-      });
-    } else if (!emailIsValid) {
-      Swal.fire({
-        toast: true,
-        position: "bottom-start",
-        icon: "warning",
-        title: "Please enter a valid email address before proceeding",
-        showConfirmButton: false,
-        timer: 3000,
-      });
+      showToast("Please fill out all of the field before proceeding");
+    } else if (!formError.emailIsValid) {
+      showToast("Please enter a valid email address before proceeding");
     } else {
-      navigate("/dashboard");
+      const endpoint = `${apiconfig.BASE_URL}/auth/login`;
+      fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          if (data.responseCode === 200) {
+            const {accessToken, refreshToken} = data.data;
+            setTokens({accessToken, refreshToken});
+            navigate("/dashboard");
+          } else if (data.responseCode === 401) {
+            showToast("The email and password you entered is incorrect");
+          } else {
+            showToast("An unexpected error occurred");
+          }
+        })
+        .catch((error) => {
+          console.error("Error: ", error);
+        });
     }
   };
 
@@ -66,13 +101,17 @@ const LoginForm = () => {
             type="text"
             placeholder="Email"
             width="64%"
-            onChange={handleEmailChange}
+            onChange={handleChange}
+            name="email"
+            value={formData.email}
           />
           <InputFieldPassword
             type={isPasswordVisible ? "text" : "password"}
             placeholder="Password"
             width="100%"
-            onChange={handlePasswordChange}
+            name="password"
+            value={formData.password}
+            onChange={handleChange}
             onClick={handleShowPassword}
             isVisible={isPasswordVisible}
           />
