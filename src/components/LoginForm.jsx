@@ -13,7 +13,6 @@ import promptCreatePIN from "./PromptCreatePIN";
 const LoginForm = () => {
   const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [hasPIN, setHasPIN] = useState(true);
   const { setTokens } = useAuthStore();
 
   const [formData, setFormData] = useState({
