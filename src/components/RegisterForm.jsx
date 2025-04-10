@@ -39,6 +39,17 @@ const RegisterForm = () => {
     setVisibility((prev) => ({ ...prev, password: !prev.password }));
   };
 
+  const showToast = (message) => {
+    Swal.fire({
+      toast: true,
+      position: "bottom-start",
+      icon: "warning",
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  };
+
   const validateForm = () => {
     const validations = {
       name: !isEmpty(formData.name),
@@ -61,14 +72,7 @@ const RegisterForm = () => {
         avatar: "Please fill out all of the field before proceeding",
       };
 
-      Swal.fire({
-        toast: true,
-        position: "bottom-start",
-        icon: "warning",
-        title: messages[field],
-        showConfirmButton: false,
-        timer: 3000,
-      });
+      showToast(messages[field]);
       return false;
     }
 
@@ -78,11 +82,11 @@ const RegisterForm = () => {
   const handleRegister = async () => {
     if (!validateForm()) return;
 
-    try{
+    try {
       const response = await fetch("http://localhost:8080/auth/signup", {
         method: "POST",
         headers: {
-          "Content-Type" : "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           email: formData.email,
@@ -90,48 +94,64 @@ const RegisterForm = () => {
           password: formData.password,
           phoneNumber: formData.phone,
           // avatar: formData.avatar
-        })
+        }),
       });
 
       const data = await response.json();
-      if(data.responseCode === 201){
-        const {accessToken, refreshToken} = data.data;
-        const setTokens = useAuthStore.getState().setTokens;
-        setTokens({accessToken, refreshToken});
-
-        const pin = await PromptCreatePIN();
-
-        if (!pin) {
-          console.log("User cancelled PIN creation.");
-          return;
-        }
-
-        const pinRes = await fetch( "http://localhost:8080/auth/set-pin" ,{
+      if (data.responseCode === 201) {
+        // REGISTER USER
+        // IF REGISTER SUCCESSFUL, CREATE WALLET
+        const createWallet = await fetch("http://localhost:8080/api/wallets", {
           method: "POST",
           headers: {
-            "Content-Type" : "application/json",
-            Authorization: `Bearer ${accessToken}`
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${data.data.accessToken}`,
           },
-          body: JSON.stringify({
-            pin: pin,
-          })
         });
 
-        const pinData = await pinRes.json();
-        if(pinRes.ok){
-          Swal.fire({
-            icon: "success",
-            title: "PIN Created!",
-            text: `Your PIN has been created successfully`,
+        // IF CREATE WALLET SUCCESSFUL, SET TOKENS AND CREATE PIN
+        if (createWallet.ok) {
+          const { accessToken, refreshToken } = data.data;
+          const setTokens = useAuthStore.getState().setTokens;
+          setTokens({ accessToken, refreshToken });
+
+          const pin = await PromptCreatePIN();
+
+          if (!pin) {
+            console.log("User cancelled PIN creation.");
+            return;
+          }
+
+          const pinRes = await fetch("http://localhost:8080/auth/set-pin", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+              pin: pin,
+            }),
           });
-          navigate("/dashboard");
-        } else{
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: pinData.message,
-          });
+
+          const pinData = await pinRes.json();
+          if (pinRes.ok) {
+            Swal.fire({
+              icon: "success",
+              title: "PIN Created!",
+              text: `Your PIN has been created successfully`,
+            });
+            navigate("/dashboard");
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: pinData.message,
+            });
+          }
         }
+      }
+      if (data.responseCode == 400) {
+        showToast(data.message);
       }
     } catch (error) {
       console.error("Error during registration:", error);
