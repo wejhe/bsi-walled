@@ -27,7 +27,9 @@ function App() {
   const handleSetPin = async () => {
     const pin = await PromptCreatePIN();
 
-    if (pin) {
+    if (!pin) {
+      return;
+    } else if (pin) {
       const endpoint = `${apiconfig.BASE_URL}/auth/set-pin`;
       fetch(endpoint, {
         method: "POST",
@@ -35,6 +37,9 @@ function App() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${accessToken}`,
         },
+        body: JSON.stringify({
+          pin: pin,
+        }),
       })
         .then((response) => {
           return response.json();
@@ -42,8 +47,8 @@ function App() {
         .then((data) => {
           Swal.fire({
             icon: "success",
-            title: "Account Registered!",
-            text: `Your account has been created with PIN ${pin}`,
+            title: "Register Success",
+            text: `Your account has been created!`,
           });
 
           navigate("/dashboard");
