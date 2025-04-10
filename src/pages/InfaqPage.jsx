@@ -11,7 +11,6 @@ const InfaqPage = () => {
         <title>BSI Walled &ndash; Infaq</title>
       </Helmet>
       <BodyLayout>
-        {/* <PageTitle text="Infaq" /> */}
         <InfaqInputLayout>
           <InfaqForm />
         </InfaqInputLayout>

@@ -1,5 +1,6 @@
 import topup from "/topup.png";
 import transfer from "/transfer.png";
+import history from "/history.png";
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 
@@ -28,6 +29,12 @@ const AccountInfo = () => {
         </div>
       </div>
       <div className="accaction">
+        <div className="accactionbtn">
+          <a className="clickableicon" href="/history">
+            <img src={history} />
+          </a>
+          History
+        </div>
         <div className="accactionbtn">
           <a className="clickableicon" href="/topup">
             <img src={topup} />
