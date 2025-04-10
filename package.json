@@ -14,6 +14,7 @@
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^7.0.1",
     "@mui/x-charts": "^7.28.0",
+    "axios": "^1.8.4",
     "bsi-walled": "file:",
     "dotenv": "^16.4.7",
     "lucide-react": "^0.486.0",
