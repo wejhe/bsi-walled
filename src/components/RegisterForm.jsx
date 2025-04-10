@@ -6,6 +6,7 @@ import logo from "/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import useAuthStore from "../stores/authStore";
 
 import {
   isValidEmail,
@@ -38,6 +39,17 @@ const RegisterForm = () => {
     setVisibility((prev) => ({ ...prev, password: !prev.password }));
   };
 
+  const showToast = (message) => {
+    Swal.fire({
+      toast: true,
+      position: "bottom-start",
+      icon: "warning",
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  };
+
   const validateForm = () => {
     const validations = {
       complete:
@@ -62,14 +74,7 @@ const RegisterForm = () => {
         phone: "Please enter a valid phone number before proceeding",
       };
 
-      Swal.fire({
-        toast: true,
-        position: "bottom-start",
-        icon: "warning",
-        title: messages[field],
-        showConfirmButton: false,
-        timer: 3000,
-      });
+      showToast(messages[field]);
       return false;
     }
 
@@ -79,22 +84,85 @@ const RegisterForm = () => {
   const handleRegister = async () => {
     if (!validateForm()) return;
 
-    const pin = await PromptCreatePIN();
+    try {
+      const response = await fetch("http://localhost:8080/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          fullName: formData.name,
+          password: formData.password,
+          phoneNumber: formData.phone,
+          // avatar: formData.avatar
+        }),
+      });
 
-    if (!pin) {
-      console.log("User cancelled PIN creation.");
-      return;
+      const data = await response.json();
+      if (data.responseCode === 201) {
+        // REGISTER USER
+        // IF REGISTER SUCCESSFUL, CREATE WALLET
+        const createWallet = await fetch("http://localhost:8080/api/wallets", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${data.data.accessToken}`,
+          },
+        });
+
+        // IF CREATE WALLET SUCCESSFUL, SET TOKENS AND CREATE PIN
+        if (createWallet.ok) {
+          const { accessToken, refreshToken } = data.data;
+          const setTokens = useAuthStore.getState().setTokens;
+          setTokens({ accessToken, refreshToken });
+
+          const pin = await PromptCreatePIN();
+
+          if (!pin) {
+            console.log("User cancelled PIN creation.");
+            return;
+          }
+
+          const pinRes = await fetch("http://localhost:8080/auth/set-pin", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify({
+              pin: pin,
+            }),
+          });
+
+          const pinData = await pinRes.json();
+          if (pinRes.ok) {
+            Swal.fire({
+              icon: "success",
+              title: "PIN Created!",
+              text: `Your PIN has been created successfully`,
+            });
+            navigate("/dashboard");
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: pinData.message,
+            });
+          }
+        }
+      }
+      if (data.responseCode == 400) {
+        showToast(data.message);
+      }
+    } catch (error) {
+      console.error("Error during registration:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Registration Failed",
+        text: "An error occurred during registration. Please try again.",
+      });
     }
-
-    console.log("PIN berhasil dibuat:", pin);
-
-    Swal.fire({
-      icon: "success",
-      title: "Account Registered!",
-      text: `Your account has been created with PIN ${pin}`,
-    });
-
-    navigate("/dashboard");
   };
 
   return (
