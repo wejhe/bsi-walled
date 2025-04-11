@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import useAuthStore from "../stores/authStore";
 import axios from "axios";
 import apiconfig from "../utils/apiconfig";
+import api from "../utils/api";
 
 const BalInfo = () => {
   const [balance, setBalance] = useState(0);
-  const accessToken = useAuthStore((state) => state.accessToken);
+  // const accessToken = useAuthStore((state) => state.accessToken);
 
   const formatToRupiah = (amount) => {
     return new Intl.NumberFormat("id-ID", {
@@ -15,27 +16,18 @@ const BalInfo = () => {
     }).format(amount);
   };
 
-  useEffect(() => {
-    // const accessToken = useAuthStore.getState().accessToken;
+  const fetchBalance = async () => {
+    try {
+      const response = await api.get("/api/wallets/balance");
+      const balance = response.data.data.balance;
+      setBalance(balance);
+    } catch (error) {
+      setBalance(0);
+      console.error("Gagal ambil data:", error);
+    }
+  };
 
-    axios
-      .get(`${apiconfig.BASE_URL}/api/wallets/balance`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      })
-      .then((response) => {
-        // console.log("Full response:", response.data.data.balance);
-        // console.log("Ini balance", response.data.balance);
-        setBalance(response.data.data.balance);
-
-        // console.log("Balance: ", balance);
-      })
-      .catch((error) => {
-        setBalance(0);
-        console.error("Gagal ambil data:", error);
-      });
-  }, [accessToken]);
+  fetchBalance();
 
   return (
     <div className="balInfo">
