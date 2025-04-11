@@ -62,7 +62,7 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const response = await axios.get(
+        const response = await axios.post(
           `http://localhost:8080/auth/refresh?refreshToken=${refreshToken}`
         );
 
