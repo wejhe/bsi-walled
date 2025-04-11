@@ -10,33 +10,108 @@ import { useNavigate } from "react-router-dom";
 import SecondaryButton from "./SecondaryButton";
 import InfaqImage from "./InfaqImage";
 import InfaqTitle from "./InfaqTitle";
+import { verifyPIN } from "../utils/verifyPIN";
+import api from "../utils/api";
 
 const InfaqForm = () => {
   const navigate = useNavigate();
-  const [pinInputValue, setPinInputValue] = useState("");
-  const [pinIsEmpty, setPinIsEmpty] = useState(true);
-  const [pinIsComplete, setPinIsComplete] = useState(false);
 
-  const [infaqAmount, setInfaqAmount] = useState("");
+  const pinInputValueRef = useRef("");
+  const pinIsEmptyRef = useRef(true);
+  const pinIsCompleteRef = useRef(false);
 
-  const pinIsEmptyRef = useRef(pinIsEmpty);
-  const pinIsCompleteRef = useRef(pinIsComplete);
+  const [formData, setFormData] = useState({
+    recipientWalletId: null,
+    amount: "",
+    description: "Infaq",
+    isSedekah: true,
+  });
 
-  useEffect(() => {
-    pinIsEmptyRef.current = pinIsEmpty;
-    pinIsCompleteRef.current = pinIsComplete;
-  }, [pinIsEmpty, pinIsComplete]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleAmountClick = (amount) => {
-    setInfaqAmount(amount.toString());
+    setFormData((prev) => ({
+      ...prev,
+      amount: amount.toString(),
+    }));
+  };
+
+  const handlePinChange = (value) => {
+    pinInputValueRef.current = value;
+    pinIsEmptyRef.current = isEmpty(value);
+    pinIsCompleteRef.current = isPinComplete(value);
   };
 
   const goToHome = () => {
     navigate("/dashboard");
   };
 
+  const showToast = (message) => {
+    Swal.fire({
+      toast: true,
+      position: "bottom-start",
+      icon: "warning",
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await api.post("api/transactions/transfer", formData);
+
+      Swal.fire({
+        title:
+          '<span style="color: #4CAF50; font-weight: 600; padding:0; margin: 0;">Top-Up Success</span>',
+        html: `
+                      <div style="text-align: left; font-size: 16px; line-height: 2.2; padding-bottom: 16px">
+                        <p>Amount<span style="float: right; font-weight: bold;">Rp ${formatCurrency(
+                          formData.amount
+                        )}</span></p>
+                        <p>Transaction ID<span style="float: right;">338818239039011</span></p>
+                        <p>Sender<span style="float: right;">E-walled</span></p>
+                        <p>Recipient<span style="float: right;">Badan Amal Infaq</span></p>
+                        <p>Note<span style="float: right;">Infaq</span></p>
+                      </div>
+                      <hr style="border-top: 1px solid #ccc;">
+                      <button class="shareReceipt"></button>
+                      <button class="downloadReceipt"></button>
+                    `,
+        icon: "success",
+        confirmButtonText: "CONTINUE",
+        customClass: {
+          popup: "modalRadius",
+          confirmButton: "modalButtonFull",
+        },
+      })
+        .then((res) => {
+          if (res.isConfirmed) {
+            goToHome();
+          }
+        })
+        .then((res) => {
+          if (res.isConfirmed) {
+            navigate("/dashboard");
+          }
+        });
+      console.log("Infaq berhasil", response.data);
+    } catch (error) {
+      showToast("Infaq failed", error.message);
+      console.log(formData);
+
+      // console.log("ini AMOUNT INFAQ",formData.amount);
+      // console.log("RECIPIENT WALLET", formData.recipientWalletId);
+      // console.log("DESCRIPTION", formData.description);
+      // console.log("IS SEDEKAH", formData.isSedekah);
+    }
+  };
+
   const handleTopUpClick = () => {
-    if (!infaqAmount || infaqAmount === "") {
+    if (!formData.amount || formData.amount === "") {
       Swal.fire({
         toast: true,
         position: "bottom-start",
@@ -51,7 +126,7 @@ const InfaqForm = () => {
         html: `
                 <div style="text-align: left; font-size: 16px; line-height: 2.2; padding-bottom: 16px">
                   <p>Infaq Amount <span style="float: right; font-weight: bold;">Rp ${formatCurrency(
-                    infaqAmount
+                    formData.amount
                   )}</span></p>
                   <p>Source<span style="float: right;">E-walled</span></p>
                 </div>
@@ -85,7 +160,7 @@ const InfaqForm = () => {
             />
           );
         },
-        preConfirm: () => {
+        preConfirm: async () => {
           if (pinIsEmptyRef.current || !pinIsCompleteRef.current) {
             const errorMessageElement =
               document.getElementById("pinErrorMessage");
@@ -96,51 +171,26 @@ const InfaqForm = () => {
             }, 1000);
             return false;
           }
-          return true;
+          try {
+            const result = await verifyPIN(pinInputValueRef.current);
+            if (result.responseCode === 200) {
+              console.log("input formData");
+              return true;
+            } else {
+              showToast("Incorrect PIN, please try again");
+              return false;
+            }
+          } catch (error) {
+            showToast("Incorrect PIN, please try again");
+            return false;
+          }
         },
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire({
-            title:
-              '<span style="color: #4CAF50; font-weight: 600; padding:0; margin: 0;">Top-Up Success</span>',
-            html: `
-                      <div style="text-align: left; font-size: 16px; line-height: 2.2; padding-bottom: 16px">
-                        <p>Amount<span style="float: right; font-weight: bold;">Rp ${formatCurrency(
-                          infaqAmount
-                        )}</span></p>
-                        <p>Transaction ID<span style="float: right;">338818239039011</span></p>
-                        <p>Sender<span style="float: right;">E-walled</span></p>
-                        <p>Recipient<span style="float: right;">Badan Amal Infaq</span></p>
-                        <p>Note<span style="float: right;">Infaq</span></p>
-                      </div>
-                      <hr style="border-top: 1px solid #ccc;">
-                      <button class="shareReceipt"></button>
-                      <button class="downloadReceipt"></button>
-                    `,
-            icon: "success",
-            confirmButtonText: "CONTINUE",
-            customClass: {
-              popup: "modalRadius",
-              confirmButton: "modalButtonFull",
-            },
-          }).then((res) => {
-            if (res.isConfirmed) {
-              goToHome();
-            }
-          });
+          handleSubmit();
         }
       });
     }
-  };
-
-  const handleInputChange = (value) => {
-    setInfaqAmount(value);
-  };
-
-  const handlePinChange = (value) => {
-    setPinInputValue(value);
-    setPinIsEmpty(isEmpty(value));
-    setPinIsComplete(isPinComplete(value));
   };
 
   return (
@@ -156,7 +206,7 @@ const InfaqForm = () => {
               <button
                 key={amount}
                 className={`amountOption ${
-                  Number(infaqAmount) === amount ? "selected" : ""
+                  Number(formData.amount) === amount ? "selected" : ""
                 }`}
                 onClick={() => handleAmountClick(amount)}
               >
@@ -167,10 +217,11 @@ const InfaqForm = () => {
 
           <div className="customAmountGroup">
             <InputCurrency
-              value={infaqAmount}
+              value={formData.amount}
+              name="infaq"
               placeholder="Infaq Amount"
               width="100%"
-              onChange={handleInputChange}
+              onChange={handleChange}
               bgColor="#ffffff"
               strokeColor="#D7D7D7"
             />

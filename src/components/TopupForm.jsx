@@ -42,7 +42,7 @@ const TopupForm = () => {
 
   // FORM DATA Dhito testing value
   const [formData, setFormData] = useState({
-    // source: "BSI",
+    source: "BSI",
     amount: "",
     description: "",
   });
@@ -150,8 +150,10 @@ const TopupForm = () => {
   };
 
   const handleSubmit = async () => {
+    const { source, ...dataToSend } = formData;
+    
     try {
-      const response = await api.post("api/transactions/top-up", formData);
+      const response = await api.post("api/transactions/top-up", dataToSend);
       const data = response.data.data;
 
       Swal.fire({
@@ -196,8 +198,8 @@ const TopupForm = () => {
         <div className="inputGroupWithSpan">
           <InputSpan text="&#127917; Source" width="25%" />
           <DropDown
-            // name="source"
-            // value={formData.source}
+            name="source"
+            value={formData.source}
             options={[
               {
                 value: "BSI",
