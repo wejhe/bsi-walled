@@ -6,21 +6,45 @@ import DropDown from "../components/DropDown";
 import ReactDOM from "react-dom/client";
 import Swal from "sweetalert2";
 import PinField from "react-pin-field";
-import { useState, useEffect, useRef } from "react";
+import {
+  useState,
+  // useEffect,
+  useRef,
+} from "react";
 import { isEmpty, isPinComplete } from "../utils/validation";
 import InputCurrency from "./InputCurrency";
 import { formatCurrency } from "../utils/formatter";
 import { useNavigate } from "react-router-dom";
+import { verifyPIN } from "../utils/verifyPIN";
+import api from "../utils/api";
 
 const TopupForm = () => {
   const navigate = useNavigate();
-  const [pinInputValue, setPinInputValue] = useState("");
-  const [pinIsEmpty, setPinIsEmpty] = useState(true);
-  const [pinIsComplete, setPinIsComplete] = useState(false);
+
+  const pinInputValueRef = useRef("");
+  const pinIsEmptyRef = useRef(true);
+  const pinIsCompleteRef = useRef(false);
+
+  const handlePinChange = (value) => {
+    pinInputValueRef.current = value;
+    pinIsEmptyRef.current = isEmpty(value);
+    pinIsCompleteRef.current = isPinComplete(value);
+
+    console.log(
+      "PIN Changed:",
+      value,
+      "Empty:",
+      pinIsEmptyRef.current,
+      "Complete:",
+      pinIsCompleteRef.current
+    );
+  };
 
   // FORM DATA Dhito testing value
   const [formData, setFormData] = useState({
-    note: "",
+    // source: "BSI",
+    amount: "",
+    description: "",
   });
 
   const handleChange = (e) => {
@@ -28,21 +52,8 @@ const TopupForm = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const [topUpSource, setTopUpSource] = useState(
-    "Bank Syariah Indonesia (BSI)"
-  );
-  const [topUpAmount, setTopUpAmount] = useState("");
-
-  const pinIsEmptyRef = useRef(pinIsEmpty);
-  const pinIsCompleteRef = useRef(pinIsComplete);
-
-  useEffect(() => {
-    pinIsEmptyRef.current = pinIsEmpty;
-    pinIsCompleteRef.current = pinIsComplete;
-  }, [pinIsEmpty, pinIsComplete]);
-
   const handleTopUpClick = () => {
-    if (!topUpAmount || topUpAmount === "") {
+    if (!formData.amount || formData.amount === "") {
       Swal.fire({
         toast: true,
         position: "bottom-start",
@@ -57,9 +68,11 @@ const TopupForm = () => {
         html: `
                 <div style="text-align: left; font-size: 16px; line-height: 2.2; padding-bottom: 16px">
                   <p>Top-Up Amount <span style="float: right; font-weight: bold;">Rp ${formatCurrency(
-                    topUpAmount
+                    formData.amount
                   )}</span></p>
-                  <p>Source<span style="float: right;">${topUpSource}</span></p>
+                  <p>Source<span style="float: right;">${
+                    formData.source
+                  }</span></p>
                 </div>
                 <hr style="border-top: 1px solid #ccc;">
                 <br><p style="font-size: 16px">Please enter your 6 digit transaction pin to proceed</p>
@@ -91,66 +104,89 @@ const TopupForm = () => {
             />
           );
         },
-        preConfirm: () => {
+        preConfirm: async () => {
           if (pinIsEmptyRef.current || !pinIsCompleteRef.current) {
             const errorMessageElement =
               document.getElementById("pinErrorMessage");
             errorMessageElement.style.display = "block";
             errorMessageElement.classList.add("bounce");
-            setTimeout(function () {
+            setTimeout(() => {
               errorMessageElement.classList.remove("bounce");
             }, 1000);
             return false;
           }
-          return true;
+
+          try {
+            const result = await verifyPIN(pinInputValueRef.current);
+            if (result.responseCode === 200) {
+              console.log("input formData");
+              return true;
+            } else {
+              showToast("Incorrect PIN, please try again");
+              return false;
+            }
+          } catch (error) {
+            showToast("Incorrect PIN, please try again");
+            return false;
+          }
         },
       }).then((result) => {
         if (result.isConfirmed) {
-          Swal.fire({
-            title:
-              '<span style="color: #4CAF50; font-weight: 600; padding:0; margin: 0;">Top-Up Success</span>',
-            html: `
-                      <div style="text-align: left; font-size: 16px; line-height: 2.2; padding-bottom: 16px">
-                        <p>Amount<span style="float: right; font-weight: bold;">Rp ${formatCurrency(
-                          topUpAmount
-                        )}</span></p>
-                        <p>Transaction ID<span style="float: right;">338818239039011</span></p>
-                        <p>Sender<span style="float: right;">${topUpSource}</span></p>
-                        <p>Recipient<span style="float: right;">1234005001</span></p>
-                        <p>Note<span style="float: right;">Bayar hutang dan beli Bakso</span></p>
-                      </div>
-                      <hr style="border-top: 1px solid #ccc;">
-                      <button class="shareReceipt"></button>
-                      <button class="downloadReceipt"></button>
-                    `,
-            icon: "success",
-            confirmButtonText: "CONTINUE",
-            customClass: {
-              popup: "modalRadius",
-              confirmButton: "modalButtonFull",
-            },
-          }).then((res) => {
-            if (res.isConfirmed) {
-              navigate("/infaq");
-            }
-          });
+          handleSubmit();
         }
       });
     }
   };
 
-  const handleSourceChange = (e) => {
-    setTopUpSource(e.target.selectedOptions[0].label);
+  const showToast = (message) => {
+    Swal.fire({
+      toast: true,
+      position: "bottom-start",
+      icon: "warning",
+      title: message,
+      showConfirmButton: false,
+      timer: 3000,
+    });
   };
 
-  const handleInputChange = (value) => {
-    setTopUpAmount(value);
-  };
+  const handleSubmit = async () => {
+    try {
+      const response = await api.post("api/transactions/top-up", formData);
+      const data = response.data.data;
 
-  const handlePinChange = (value) => {
-    setPinInputValue(value);
-    setPinIsEmpty(isEmpty(value));
-    setPinIsComplete(isPinComplete(value));
+      Swal.fire({
+        title:
+          '<span style="color: #4CAF50; font-weight: 600;">Top-Up Success</span>',
+        html: `
+          <div style="text-align: left; font-size: 16px; line-height: 2.2; padding-bottom: 16px">
+            <p>Amount<span style="float: right; font-weight: bold;">Rp ${formatCurrency(
+              formData.amount
+            )}</span></p>
+            <p>Transaction ID<span style="float: right;">${data.id}</span></p>
+            <p>Source<span style="float: right;">${formData.source}</span></p>
+            <p>Recipient<span style="float: right;">
+              E-Walled
+            </span></p>
+            <p>Note<span style="float: right;">${
+              formData.description
+            }</span></p>
+          </div>
+        `,
+        icon: "success",
+        confirmButtonText: "CONTINUE",
+        customClass: {
+          popup: "modalRadius",
+          confirmButton: "modalButtonFull",
+        },
+      }).then((res) => {
+        if (res.isConfirmed) {
+          navigate("/infaq");
+        }
+      });
+      console.log("Top up berhasil", response.data);
+    } catch (error) {
+      showToast("Top up failed", error.message);
+    }
   };
 
   return (
@@ -160,38 +196,41 @@ const TopupForm = () => {
         <div className="inputGroupWithSpan">
           <InputSpan text="&#127917; Source" width="25%" />
           <DropDown
+            // name="source"
+            // value={formData.source}
             options={[
               {
-                value: "bsi",
+                value: "BSI",
                 label: "Bank Syariah Indonesia (BSI)",
               },
               {
-                value: "bca",
+                value: "BCA",
                 label: "Bank Central Asia (BCA)",
               },
               {
-                value: "bri",
+                value: "BRI",
                 label: "Bank Rakyat Indonesia (BRI)",
               },
             ]}
-            onChange={handleSourceChange}
+            onChange={handleChange}
           />
         </div>
         <div className="inputGroupWithSpan">
           <InputSpan text="&#128176; Amount" width="25%" />
           <InputCurrency
-            value={topUpAmount}
+            name="amount"
+            value={formData.amount}
             placeholder="Top-Up Amount"
             width="100%"
-            onChange={handleInputChange}
+            onChange={handleChange}
           />
         </div>
         <div className="inputGroupWithSpan">
           <InputSpan text="&#128221; Note" width="25%" />
           <InputField
             type="text"
-            name="note"
-            value={formData.note}
+            name="description"
+            value={formData.description}
             placeholder="Top-Up Note"
             width="75%"
             onChange={handleChange}

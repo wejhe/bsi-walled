@@ -8,12 +8,20 @@ const InputCurrency = ({
   bgColor = "#fafbfd",
   strokeColor = "transparent",
   value = "",
+  name = "",
 }) => {
   // const [value, setValue] = useState("");
 
   const handleChange = (e) => {
     const rawValue = e.target.value.replace(/[^0-9]/g, ""); // hanya angka
-    if (onChange) onChange(rawValue);
+    if (onChange) {
+      onChange({
+        target: {
+          name: name,
+          value: rawValue,
+        },
+      });
+    }
   };
 
   const formattedValue = formatCurrency(value);
@@ -34,6 +42,7 @@ const InputCurrency = ({
           placeholder={placeholder}
           value={formattedValue}
           onChange={handleChange}
+          name={name}
         />
         <button className="wCurrencyIcon">Rp</button>
       </div>
