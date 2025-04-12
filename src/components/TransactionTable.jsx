@@ -13,7 +13,11 @@ const TransactionTable = () => {
       try {
         const response = await api.get("/api/transactions/me");
 
-        const mappedData = response.data.data.map((item) => {
+        const sortedData = response.data.data.sort(
+          (a, b) => new Date(b.transactionDate) - new Date(a.transactionDate)
+        );
+
+        const mappedData = sortedData.map((item) => {
           const dateObj = new Date(item.transactionDate);
           const datetime = dateObj
             .toLocaleString("id-ID", {
@@ -42,6 +46,7 @@ const TransactionTable = () => {
           return {
             id: item.id,
             datetime,
+            timestamp: dateObj.getTime(),
             type: item.transactionType
               .replace("_", "-")
               .toLowerCase()
@@ -118,6 +123,7 @@ const TransactionTable = () => {
       name: "Date and Time",
       selector: (row) => row.datetime,
       sortable: true,
+      sortFunction: (a, b) => b.timestamp - a.timestamp,
     },
     {
       name: "Transaction Type",
