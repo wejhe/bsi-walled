@@ -33,8 +33,8 @@ const TransactionTable = () => {
       try {
         const response = await api.get("/api/transactions/me");
 
-        const sortedData = response.data.data.sort(
-          (a, b) => new Date(b.transactionDate) - new Date(a.transactionDate)
+        const sortedData = [...response.data.data].sort(
+          (a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime()
         );
 
         const mappedData = sortedData.map((item) => {
@@ -47,6 +47,7 @@ const TransactionTable = () => {
               year: "numeric",
               hour: "2-digit",
               minute: "2-digit",
+              second: "2-digit",
             })
             .replace(/\./g, ":")
             .replace(",", "");
@@ -103,6 +104,7 @@ const TransactionTable = () => {
 
   useEffect(() => {
     if (!transactionHistory) return;
+
     const filteredData = transactionHistory.filter((item) =>
       [
         item.description,

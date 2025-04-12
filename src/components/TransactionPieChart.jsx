@@ -130,8 +130,8 @@ const TransactionPieChart = () => {
   useEffect(() => {
     if (!transactionHistory || !allUsersData) return;
 
-    const sortedData = transactionHistory.sort(
-      (a, b) => new Date(b.transactionDate) - new Date(a.transactionDate)
+    const sortedData = [...transactionHistory].sort(
+      (a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime()
     );
 
     const mappedData = sortedData.map((item) => {
@@ -144,6 +144,7 @@ const TransactionPieChart = () => {
           year: "numeric",
           hour: "2-digit",
           minute: "2-digit",
+          second: "2-digit",
         })
         .replace(/\./g, ":")
         .replace(",", "");
@@ -259,7 +260,7 @@ const TransactionPieChart = () => {
               </div>
               <p></p>
               <p style={{ marginBottom: "8px" }}>
-                You've spent 17% of your income
+                You've spent {spendingRate}% of your income
               </p>
               <p style={{ marginBottom: "24px" }}>
                 <b>
