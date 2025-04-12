@@ -33,8 +33,12 @@ const TransactionTable = () => {
       try {
         const response = await api.get("/api/transactions/me");
 
+        console.log(response.data.data);
+
         const sortedData = [...response.data.data].sort(
-          (a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime()
+          (a, b) =>
+            new Date(b.transactionDate).getTime() -
+            new Date(a.transactionDate).getTime()
         );
 
         const mappedData = sortedData.map((item) => {
@@ -56,7 +60,10 @@ const TransactionTable = () => {
           let sign = "+";
 
           if (item.transactionType === "TRANSFER") {
-            if (item.recipientWalletId !== userWalletId) {
+            if (item.recipientWalletId === null) {
+              fromto = "BSI LAZIS";
+              sign = "-";
+            } else if (item.recipientWalletId !== userWalletId) {
               fromto = item.recipientWalletId;
               sign = "-";
             } else {

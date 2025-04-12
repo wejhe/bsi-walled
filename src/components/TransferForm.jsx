@@ -37,8 +37,6 @@ const TransferForm = () => {
 
   const [balance, setBalance] = useState(0);
 
-  // console.log("TopupForm mounted");
-
   const [dataRecipient, setDataRecipient] = useState([]);
 
   useEffect(() => {

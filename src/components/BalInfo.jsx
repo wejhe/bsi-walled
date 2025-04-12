@@ -16,18 +16,20 @@ const BalInfo = () => {
     }).format(amount);
   };
 
-  const fetchBalance = async () => {
-    try {
-      const response = await api.get("/api/wallets/balance");
-      const balance = response.data.data.balance;
-      setBalance(balance);
-    } catch (error) {
-      setBalance(0);
-      console.error("Gagal ambil data:", error);
-    }
-  };
+  useEffect(() => {
+    const fetchBalance = async () => {
+      try {
+        const response = await api.get("/api/wallets/balance");
+        const balance = response.data.data.balance;
+        setBalance(balance);
+      } catch (error) {
+        setBalance(0);
+        console.error("Gagal ambil data:", error);
+      }
+    };
 
-  fetchBalance();
+    fetchBalance();
+  }, []);
 
   return (
     <div className="balInfo">
