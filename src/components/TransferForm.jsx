@@ -13,8 +13,12 @@ import { formatCurrency } from "../utils/formatter";
 import { useNavigate } from "react-router-dom";
 import api from "../utils/api";
 import { verifyPIN } from "../utils/verifyPIN";
+import useAuthStore from "../stores/authStore";
 
 const TransferForm = () => {
+  const { userData } = useAuthStore();
+  const userWalletId = userData.wallet.id;
+
   const navigate = useNavigate();
 
   const pinInputValueRef = useRef("");
@@ -33,39 +37,44 @@ const TransferForm = () => {
 
   const [balance, setBalance] = useState(0);
 
+  // console.log("TopupForm mounted");
+
   const [dataRecipient, setDataRecipient] = useState([]);
 
   useEffect(() => {
-  const fetchRecipient = async () => {
-    try {
-      const response = await api.get("api/users");
-      setDataRecipient(response.data.data);
-      console.log("INI RESPONS",response.data.data)
-    } catch (error) {
-      console.error("Gagal fetch users", error);
-    }
-  };
+    const fetchRecipient = async () => {
+      try {
+        const response = await api.get("api/users");
+        setDataRecipient(response.data.data);
+        // console.log("INI RESPONS", response.data.data);
+      } catch (error) {
+        console.error("Gagal fetch users", error);
+      }
+    };
 
-  fetchRecipient();
+    fetchRecipient();
   }, []);
 
-  const fetchBalance = async () => {
-    try {
-      const response = await api.get("/api/wallets/balance");
-      const balance = response.data.data.balance;
-      setBalance(balance);
-    } catch (error) {
-      setBalance(0);
-      console.error("Gagal ambil data:", error);
-    }
-  };
-
-  fetchBalance();
+  useEffect(() => {
+    const fetchBalance = async () => {
+      try {
+        const response = await api.get("/api/wallets/balance");
+        const balance = response.data.data.balance;
+        setBalance(balance);
+      } catch (error) {
+        setBalance(0);
+        console.error("Gagal ambil data:", error);
+      }
+    };
+    fetchBalance();
+  }, []);
 
   const recipientOptions = dataRecipient
     ? dataRecipient
-        .filter(item => item.user && item.wallet)
-        .map(item => ({
+        .filter(
+          (item) => item.user && item.wallet && item.wallet.id !== userWalletId
+        )
+        .map((item) => ({
           value: item.wallet.id,
           label: `${item.user.fullName} - ${item.wallet.accountNumber}`,
         }))
@@ -107,7 +116,7 @@ const TransferForm = () => {
               formData.amount
             )}</span></p>
             <p>Transaction ID<span style="float: right;">${data.id}</span></p>
-            <p>Source<span style="float: right;">${formData.source}</span></p>
+            <p>Source<span style="float: right;">E-Walled</span></p>
             <p>Recipient<span style="float: right;">
               ${formData.recipientWalletId}
             </span></p>
@@ -130,7 +139,7 @@ const TransferForm = () => {
       // console.log("Infaq berhasil", response.data);
     } catch (error) {
       showToast("Transfer failed", error.message);
-      console.log(formData);
+      // console.log(formData);
     }
   };
 
@@ -209,7 +218,7 @@ const TransferForm = () => {
           try {
             const result = await verifyPIN(pinInputValueRef.current);
             if (result.responseCode === 200) {
-              console.log("input formData");
+              // console.log("input formData");
               return true;
             } else {
               showToast("Incorrect PIN, please try again");
@@ -236,7 +245,7 @@ const TransferForm = () => {
   //   setTransferAmount(value);
   // };
 
-  console.log("dataRecipient", dataRecipient);
+  // console.log("dataRecipient", dataRecipient);
 
   return (
     <>
@@ -256,7 +265,7 @@ const TransferForm = () => {
           <InputCurrency
             value={formData.amount}
             name="amount"
-            placeholder="Tansfer Amount"
+            placeholder="Transfer Amount"
             width="100%"
             onChange={handleChange}
           />
