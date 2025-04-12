@@ -131,7 +131,9 @@ const TransactionPieChart = () => {
     if (!transactionHistory || !allUsersData) return;
 
     const sortedData = [...transactionHistory].sort(
-      (a, b) => new Date(b.transactionDate).getTime() - new Date(a.transactionDate).getTime()
+      (a, b) =>
+        new Date(b.transactionDate).getTime() -
+        new Date(a.transactionDate).getTime()
     );
 
     const mappedData = sortedData.map((item) => {
@@ -153,7 +155,10 @@ const TransactionPieChart = () => {
       let sign = "+";
 
       if (item.transactionType === "TRANSFER") {
-        if (item.recipientWalletId !== userWalletId) {
+        if (item.recipientWalletId === null) {
+          fromto = "BSI LAZIS";
+          sign = "-";
+        } else if (item.recipientWalletId !== userWalletId) {
           fromto = item.recipientWalletId;
           sign = "-";
         } else {

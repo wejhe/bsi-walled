@@ -28,7 +28,7 @@ const RecentTransaction = ({data}) => {
     {
       name: "Type",
       selector: (row) => row.type,
-      maxwidth: "8px",
+      width: "100px",
     },
     {
       name: "From / To",

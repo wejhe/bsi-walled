@@ -74,7 +74,7 @@ const InfaqForm = () => {
                         )}</span></p>
                         <p>Transaction ID<span style="float: right;">338818239039011</span></p>
                         <p>Sender<span style="float: right;">E-walled</span></p>
-                        <p>Recipient<span style="float: right;">Badan Amal Infaq</span></p>
+                        <p>Recipient<span style="float: right;">BSI LAZIS</span></p>
                         <p>Note<span style="float: right;">Infaq</span></p>
                       </div>
                       <hr style="border-top: 1px solid #ccc;">
