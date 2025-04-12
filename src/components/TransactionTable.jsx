@@ -1,12 +1,15 @@
 import DataTable from "react-data-table-component";
 import InputField from "../components/InputField";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import api from "../utils/api";
+import useAuthStore from "../stores/authStore";
+import { formatCurrency } from "../utils/formatter";
 
 const TransactionTable = () => {
   const [searchValue, setSearchValue] = useState("");
   const [transactionHistory, setTransactionHistory] = useState(null);
   const [filteredData, setFilteredData] = useState(null);
+  const { userData } = useAuthStore();
 
   useEffect(() => {
     const fetchTransactionHistoryData = async () => {
@@ -18,6 +21,7 @@ const TransactionTable = () => {
         );
 
         const mappedData = sortedData.map((item) => {
+          const userWalletId = userData.wallet.id;
           const dateObj = new Date(item.transactionDate);
           const datetime = dateObj
             .toLocaleString("id-ID", {
@@ -34,7 +38,7 @@ const TransactionTable = () => {
           let sign = "+";
 
           if (item.transactionType === "TRANSFER") {
-            if (item.recipientWalletId !== 9) {
+            if (item.recipientWalletId !== userWalletId) {
               fromto = item.recipientWalletId;
               sign = "-";
             } else {
@@ -53,7 +57,7 @@ const TransactionTable = () => {
               .replace(/\b\w/g, (c) => c.toUpperCase()),
             fromto,
             description: item.description,
-            amount: `${sign} ${item.amount}`,
+            amount: `${sign} ${formatCurrency(item.amount.toString())}`,
           };
         });
 

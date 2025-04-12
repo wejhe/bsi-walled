@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
+import quarterOfYear from "dayjs/plugin/quarterOfYear";
 
 const TransactionSummary = () => {
   const [transactionHistory, setTransactionHistory] = useState(null);
@@ -19,11 +20,12 @@ const TransactionSummary = () => {
   dayjs.extend(isBetween);
   dayjs.extend(isSameOrAfter);
   dayjs.extend(isSameOrBefore);
+  dayjs.extend(quarterOfYear);
 
   const filterTransactionsByDate = (transactions, filterType) => {
     const now = dayjs();
     let startDate, endDate;
-  
+
     switch (filterType) {
       case "weekly":
         startDate = now.startOf("week");
@@ -34,15 +36,19 @@ const TransactionSummary = () => {
         endDate = now.endOf("month");
         break;
       case "quarterly":
-        const quarter = Math.floor((now.month()) / 3);
-        startDate = dayjs().quarter(quarter + 1).startOf("quarter");
-        endDate = dayjs().quarter(quarter + 1).endOf("quarter");
+        const quarter = Math.floor(now.month() / 3);
+        startDate = dayjs()
+          .quarter(quarter + 1)
+          .startOf("quarter");
+        endDate = dayjs()
+          .quarter(quarter + 1)
+          .endOf("quarter");
         break;
       default:
         return transactions;
     }
-  
-    return transactions.filter(tx => {
+
+    return transactions.filter((tx) => {
       const date = dayjs(tx.transactionDate);
       return date.isSameOrAfter(startDate) && date.isSameOrBefore(endDate);
     });
@@ -53,7 +59,6 @@ const TransactionSummary = () => {
       try {
         const response = await api.get("/api/transactions/me");
         setTransactionHistory(response.data.data);
-        console.log("Transaction History:", response.data.data);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -64,12 +69,15 @@ const TransactionSummary = () => {
 
   useEffect(() => {
     if (!transactionHistory) return;
-  
+
     const mappingData = () => {
       const userWalletId = userData.wallet.id;
-  
-      const filteredTransactions = filterTransactionsByDate(transactionHistory, filter);
-  
+
+      const filteredTransactions = filterTransactionsByDate(
+        transactionHistory,
+        filter
+      );
+
       const totalIncome = filteredTransactions.reduce((total, tx) => {
         if (
           tx.transactionType === "TOP_UP" ||
@@ -80,27 +88,27 @@ const TransactionSummary = () => {
         }
         return total;
       }, 0);
-  
+
       const totalSpending = filteredTransactions.reduce((total, tx) => {
         if (tx.transactionType === "TRANSFER" && tx.walletId === userWalletId) {
           return total + tx.amount;
         }
         return total;
       }, 0);
-  
+
       setTotalIncome(totalIncome);
       setTotalSpending(totalSpending);
-  
+
       const savingsRate =
         totalIncome > 0
           ? 100 - ((totalSpending / totalIncome) * 100).toFixed(0)
           : 0;
-  
+
       setSavingsRate(savingsRate);
     };
-  
+
     mappingData();
-  }, [transactionHistory, filter]);  
+  }, [transactionHistory, filter]);
 
   return (
     <>
