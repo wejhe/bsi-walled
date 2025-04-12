@@ -1,11 +1,30 @@
 import topup from "/topup.png";
 import transfer from "/transfer.png";
 import history from "/history.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import api from "../utils/api";
+import { formatCurrency } from "../utils/formatter";
 
 const AccountInfo = () => {
   const [balanceVisible, setBalanceVisible] = useState(false);
+  const [accountBalance, setAccountBalance] = useState(null);
+
+  useEffect(() => {
+    const fetchAccountBalanceData = async () => {
+      try {
+        const response = await api.get("/api/users/me");
+        const formattedBalance = formatCurrency(
+          response.data.data.wallet.balance.toString()
+        );
+        setAccountBalance(formattedBalance);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchAccountBalanceData();
+  }, []);
 
   const handleBalanceVisibility = () => {
     setBalanceVisible(!balanceVisible);
@@ -17,7 +36,7 @@ const AccountInfo = () => {
         <p>Account Balance</p>
         <div className="balanceamount">
           <strong className="info">
-            Rp {balanceVisible ? "980.572.000" : "**********"}
+            Rp {balanceVisible ? accountBalance : "**********"}
           </strong>
           <a className="clickableicon" onClick={handleBalanceVisibility}>
             {balanceVisible ? (

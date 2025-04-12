@@ -36,7 +36,7 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 403 && !originalRequest._retry) {
+    if ((error.response?.status === 403 || error.response?.status === 500) && !originalRequest._retry) {
       originalRequest._retry = true;
 
       const { refreshToken, setTokens, clearTokens } = useAuthStore.getState();
@@ -62,12 +62,12 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        const response = await axios.get(
+        const response = await axios.post(
           `http://localhost:8080/auth/refresh?refreshToken=${refreshToken}`
         );
 
-        const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data;
-        setTokens({ accessToken: newAccessToken, newRefreshToken });
+        const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data.data;
+        setTokens({ accessToken: newAccessToken, refreshToken: newRefreshToken });
 
         api.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
         processQueue(null, newAccessToken);
