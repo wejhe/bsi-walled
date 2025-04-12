@@ -66,8 +66,8 @@ api.interceptors.response.use(
           `http://localhost:8080/auth/refresh?refreshToken=${refreshToken}`
         );
 
-        const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data;
-        setTokens({ accessToken: newAccessToken, newRefreshToken });
+        const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data.data;
+        setTokens({ accessToken: newAccessToken, refreshToken: newRefreshToken });
 
         api.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
         processQueue(null, newAccessToken);
