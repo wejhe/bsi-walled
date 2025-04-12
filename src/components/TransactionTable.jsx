@@ -9,9 +9,26 @@ const TransactionTable = () => {
   const [searchValue, setSearchValue] = useState("");
   const [transactionHistory, setTransactionHistory] = useState(null);
   const [filteredData, setFilteredData] = useState(null);
+  const [allUsersData, setAllUsersData] = useState(null);
   const { userData } = useAuthStore();
 
   useEffect(() => {
+    const fetchAllUsersData = async () => {
+      try {
+        const response = await api.get("/api/users");
+
+        setAllUsersData(response.data.data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchAllUsersData();
+  }, []);
+
+  useEffect(() => {
+    if (!allUsersData) return;
+
     const fetchTransactionHistoryData = async () => {
       try {
         const response = await api.get("/api/transactions/me");
@@ -45,6 +62,20 @@ const TransactionTable = () => {
               fromto = item.walletId;
               sign = "+";
             }
+          } else {
+            fromto = "Top-Up Provider";
+          }
+
+          let fromtoName = "-";
+          if (typeof fromto === "number") {
+            const userMatch = allUsersData.find(
+              (entry) => entry.wallet.id === fromto
+            );
+            if (userMatch) {
+              fromtoName = userMatch.user.fullName;
+            }
+          } else {
+            fromtoName = fromto;
           }
 
           return {
@@ -55,7 +86,7 @@ const TransactionTable = () => {
               .replace("_", "-")
               .toLowerCase()
               .replace(/\b\w/g, (c) => c.toUpperCase()),
-            fromto,
+            fromto: fromtoName,
             description: item.description,
             amount: `${sign} ${formatCurrency(item.amount.toString())}`,
           };
@@ -68,7 +99,7 @@ const TransactionTable = () => {
     };
 
     fetchTransactionHistoryData();
-  }, []);
+  }, [allUsersData]);
 
   useEffect(() => {
     if (!transactionHistory) return;

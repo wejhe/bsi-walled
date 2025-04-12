@@ -19,12 +19,27 @@ const TransactionPieChart = () => {
   const [totalSpending, setTotalSpending] = useState(0);
   const [spendingRate, setSpendingRate] = useState(0);
   const [filter, setFilter] = useState("weekly");
+  const [allUsersData, setAllUsersData] = useState(null);
   const { userData } = useAuthStore();
 
   dayjs.extend(isBetween);
   dayjs.extend(isSameOrAfter);
   dayjs.extend(isSameOrBefore);
   dayjs.extend(quarterOfYear);
+
+  useEffect(() => {
+    const fetchAllUsersData = async () => {
+      try {
+        const response = await api.get("/api/users");
+
+        setAllUsersData(response.data.data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchAllUsersData();
+  }, []);
 
   const filterTransactionsByDate = (transactions, filterType) => {
     const now = dayjs();
@@ -113,7 +128,7 @@ const TransactionPieChart = () => {
   }, [transactionHistory, filter]);
 
   useEffect(() => {
-    if (!transactionHistory) return;
+    if (!transactionHistory || !allUsersData) return;
 
     const sortedData = transactionHistory.sort(
       (a, b) => new Date(b.transactionDate) - new Date(a.transactionDate)
@@ -144,6 +159,20 @@ const TransactionPieChart = () => {
           fromto = item.walletId;
           sign = "+";
         }
+      } else {
+        fromto = "Top-Up Provider";
+      }
+
+      let fromtoName = "-";
+      if (typeof fromto === "number") {
+        const userMatch = allUsersData.find(
+          (entry) => entry.wallet.id === fromto
+        );
+        if (userMatch) {
+          fromtoName = userMatch.user.fullName;
+        }
+      } else {
+        fromtoName = fromto;
       }
 
       return {
@@ -154,7 +183,7 @@ const TransactionPieChart = () => {
           .replace("_", "-")
           .toLowerCase()
           .replace(/\b\w/g, (c) => c.toUpperCase()),
-        fromto,
+        fromto: fromtoName,
         description: item.description,
         amount: `${sign} ${formatCurrency(item.amount.toString())}`,
       };
@@ -229,8 +258,15 @@ const TransactionPieChart = () => {
                 />
               </div>
               <p></p>
-              <p style={{ marginBottom: "8px" }}>You've spent 17% of your income</p>
-              <p style={{ marginBottom: "24px" }}><b>Rp{formatCurrency((totalIncome - totalSpending).toString())}</b> is remaining</p>
+              <p style={{ marginBottom: "8px" }}>
+                You've spent 17% of your income
+              </p>
+              <p style={{ marginBottom: "24px" }}>
+                <b>
+                  Rp{formatCurrency((totalIncome - totalSpending).toString())}
+                </b>{" "}
+                is remaining
+              </p>
             </div>
             <div className="recentTransactionHistory">
               <RecentTransaction data={last3TransactionHistory} />
