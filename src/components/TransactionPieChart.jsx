@@ -259,7 +259,7 @@ const TransactionPieChart = () => {
               </div>
               <p></p>
               <p style={{ marginBottom: "8px" }}>
-                You've spent 17% of your income
+                You've spent {spendingRate}% of your income
               </p>
               <p style={{ marginBottom: "24px" }}>
                 <b>
