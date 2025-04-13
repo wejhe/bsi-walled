@@ -14,7 +14,7 @@ export const isValidPassword = (password) => {
 };
 
 export const isValidPhone = (phone) => {
-  const pattern = /^\d{10,14}$/;
+  const pattern = /^\d{10,13}$/;
   return pattern.test(phone);
 };
 

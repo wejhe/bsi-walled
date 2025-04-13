@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import apiconfig from "../utils/apiconfig";
+import { normalizedPhoneNumber } from "../utils/formatter"
 
 import {
   isValidEmail,
@@ -32,7 +33,7 @@ const RegisterForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value.toString() }));
   };
 
   const handlePasswordVisibility = () => {
@@ -93,8 +94,10 @@ const RegisterForm = () => {
         !isEmpty(formData.password),
       email: isValidEmail(formData.email),
       password: isValidPassword(formData.password),
-      phone: isValidPhone(formData.phone),
+      phone: isValidPhone(normalizedPhoneNumber(formData.phone)),
     };
+
+    console.log(formData.phone)
 
     const errors = Object.entries(validations).filter(([, valid]) => !valid);
 
