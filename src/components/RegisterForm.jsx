@@ -105,7 +105,7 @@ const RegisterForm = () => {
         complete: "Please fill out all of the field before proceeding",
         email: "Please enter a valid email address before proceeding",
         password:
-          "Your password must be a combination of letters and numbers with minimum 8 characters",
+          "Your password must be a combination of letters, numbers, and special characters with minimum 8 characters",
         phone: "Please enter a valid phone number before proceeding",
       };
 
