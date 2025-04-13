@@ -157,6 +157,8 @@ const RegisterForm = () => {
             .catch((error) => {
               console.error("Error: ", error);
             });
+        } else if (data.responseCode === 400) {
+          showToast("Email or phone number you registered is already exist");
         }
       })
       .catch((error) => {
