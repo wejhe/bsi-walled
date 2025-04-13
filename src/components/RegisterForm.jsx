@@ -76,10 +76,16 @@ const RegisterForm = () => {
           Swal.fire({
             icon: "success",
             title: "Register Success",
-            text: `Your account has been created!`,
+            text: `Your walled account has been created! Please login to access your walled!`,
+            confirmButtonText: "UNDERSTOOD",
+            customClass: {
+              popup: "modalRadius",
+              confirmButton: "modalButton",
+              cancelButton: "modalButtonSecondary",
+            },
           });
 
-          navigate("/dashboard");
+          navigate("/login");
         })
         .catch((error) => {
           console.error("Error: ", error);
