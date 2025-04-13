@@ -13,7 +13,15 @@ const InputCurrency = ({
   // const [value, setValue] = useState("");
 
   const handleChange = (e) => {
-    const rawValue = e.target.value.replace(/[^0-9]/g, ""); // hanya angka
+    let rawValue = e.target.value.replace(/[^0-9]/g, ""); // hanya angka
+  
+    // Hindari angka yang hanya '0' atau diawali dengan '0'
+    if (rawValue === "0") {
+      rawValue = ""; // Kosongkan jika hanya '0'
+    } else if (rawValue.length > 1 && rawValue.startsWith("0")) {
+      rawValue = rawValue.replace(/^0+/, ""); // Hapus leading zeros jika lebih dari satu digit
+    }
+  
     if (onChange) {
       onChange({
         target: {
@@ -23,6 +31,7 @@ const InputCurrency = ({
       });
     }
   };
+  
 
   const formattedValue = formatCurrency(value);
 
