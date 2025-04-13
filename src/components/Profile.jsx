@@ -4,14 +4,20 @@ import api from "../utils/api";
 const Profile = () => {
   const [fullName, setFullName] = useState(null);
   const [accountType, setAccountType] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState(null);
 
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
         const response = await api.get("/api/users/me");
         setFullName(response.data.data.user.fullName);
+        setAvatarUrl(response.data.data.user.avatarUrl);
         const accountType = response.data.data.wallet.type;
-        setAccountType(accountType.charAt(0).toUpperCase() + accountType.slice(1).toLowerCase() + " account");
+        setAccountType(
+          accountType.charAt(0).toUpperCase() +
+            accountType.slice(1).toLowerCase() +
+            " account"
+        );
       } catch (error) {
         console.error("Error:", error);
       }
@@ -30,7 +36,11 @@ const Profile = () => {
       </div>
       <img
         className="profilepicture"
-        src="https://media.istockphoto.com/id/588348500/id/vektor/gambar-profil-avatar-pria-vektor.jpg?s=612x612&w=0&k=20&c=qFWeuD8Hv1VfvFI1ihgKc5cdtrr-486tyxAzHkcFxhY="
+        src={
+          avatarUrl
+            ? avatarUrl
+            : "https://media.istockphoto.com/id/588348500/id/vektor/gambar-profil-avatar-pria-vektor.jpg?s=612x612&w=0&k=20&c=qFWeuD8Hv1VfvFI1ihgKc5cdtrr-486tyxAzHkcFxhY="
+        }
       />
     </div>
   );

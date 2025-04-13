@@ -90,8 +90,7 @@ const RegisterForm = () => {
       complete:
         !isEmpty(formData.name) &&
         !isEmpty(formData.email) &&
-        !isEmpty(formData.password) &&
-        !isEmpty(formData.avatar),
+        !isEmpty(formData.password),
       email: isValidEmail(formData.email),
       password: isValidPassword(formData.password),
       phone: isValidPhone(formData.phone),
@@ -130,6 +129,7 @@ const RegisterForm = () => {
         fullName: formData.name,
         password: formData.password,
         phoneNumber: formData.phone,
+        avatarUrl: formData.avatar,
       }),
     })
       .then((response) => {
@@ -151,7 +151,7 @@ const RegisterForm = () => {
             })
             .then((data) => {
               if (data.responseCode === 201) {
-                handleSetPin(accessToken)
+                handleSetPin(accessToken);
               }
             })
             .catch((error) => {
