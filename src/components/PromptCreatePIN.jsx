@@ -98,7 +98,18 @@ export const promptCreatePIN = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         resolve(pinValue);
-      } else {
+      } else if (result.dismiss) {
+        Swal.fire({
+          icon: "info",
+          title: "PIN Not Created",
+          text: `Please login when you came back to set your transaction pin`,
+          confirmButtonText: "UNDERSTOOD",
+          customClass: {
+            popup: "modalRadius",
+            confirmButton: "modalButton",
+            cancelButton: "modalButtonSecondary",
+          },
+        });
         reject("User cancelled");
       }
     });

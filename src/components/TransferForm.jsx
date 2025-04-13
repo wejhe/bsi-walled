@@ -18,6 +18,7 @@ import useAuthStore from "../stores/authStore";
 const TransferForm = () => {
   const { userData } = useAuthStore();
   const userWalletId = userData.wallet.id;
+  const [selectedRecipient, setSelectedRecipient] = useState(null);
 
   const navigate = useNavigate();
 
@@ -78,9 +79,32 @@ const TransferForm = () => {
         }))
     : [];
 
+  useEffect(() => {
+    if (recipientOptions.length > 0 && !formData.recipientWalletId) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        recipientWalletId: recipientOptions[0].value,
+      }));
+      const selectedOption = recipientOptions.find(
+        (item) => item.value === Number(recipientOptions[0].value)
+      );
+      if (selectedOption) {
+        setSelectedRecipient(selectedOption.label);
+      }
+    }
+  }, [dataRecipient]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === "recipientWalletId") {
+      const selectedOption = recipientOptions.find(
+        (item) => item.value === Number(value)
+      );
+      if (selectedOption) {
+        setSelectedRecipient(selectedOption.label);
+      }
+    }
   };
 
   const handlePinChange = (value) => {
@@ -142,7 +166,16 @@ const TransferForm = () => {
   };
 
   const handleTransferClick = () => {
-    if (balance < formData.amount) {
+    if (formData.recipientWalletId == userWalletId) {
+      Swal.fire({
+        toast: true,
+        position: "bottom-start",
+        icon: "warning",
+        title: "You can't transfer to yourself!",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    } else if (balance < formData.amount) {
       Swal.fire({
         toast: true,
         position: "bottom-start",
@@ -160,6 +193,15 @@ const TransferForm = () => {
         showConfirmButton: false,
         timer: 3000,
       });
+    } else if (formData.amount < 10000) {
+      Swal.fire({
+        toast: true,
+        position: "bottom-start",
+        icon: "warning",
+        title: "The minimum transaction amount allowed is Rp10.000",
+        showConfirmButton: false,
+        timer: 3000,
+      });
     } else {
       Swal.fire({
         title: "Confirmation",
@@ -168,9 +210,7 @@ const TransferForm = () => {
                   <p>Transfer Amount <span style="float: right; font-weight: bold;">Rp ${formatCurrency(
                     formData.amount
                   )}</span></p>
-                  <p>Source<span style="float: right;">${
-                    formData.source
-                  }</span></p>
+                  <p>Recipient<span style="float: right;">${selectedRecipient}</span></p>
                 </div>
                 <hr style="border-top: 1px solid #ccc;">
                 <br><p style="font-size: 16px">Please enter your 6 digit transaction pin to proceed</p>

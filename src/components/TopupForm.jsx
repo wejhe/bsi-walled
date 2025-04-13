@@ -62,6 +62,15 @@ const TopupForm = () => {
         showConfirmButton: false,
         timer: 3000,
       });
+    } else if (formData.amount < 10000) {
+      Swal.fire({
+        toast: true,
+        position: "bottom-start",
+        icon: "warning",
+        title: "The minimum transaction amount allowed is Rp10.000",
+        showConfirmButton: false,
+        timer: 3000,
+      });
     } else {
       Swal.fire({
         title: "Confirmation",
