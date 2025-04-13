@@ -7,13 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import apiconfig from "../utils/apiconfig";
-import { normalizedPhoneNumber } from "../utils/formatter"
+import { normalizedPhoneNumber } from "../utils/formatter";
 
 import {
   isValidEmail,
   isEmpty,
   isValidPassword,
   isValidPhone,
+  isValidUrl,
 } from "../utils/validation";
 
 const RegisterForm = () => {
@@ -95,9 +96,8 @@ const RegisterForm = () => {
       email: isValidEmail(formData.email),
       password: isValidPassword(formData.password),
       phone: isValidPhone(normalizedPhoneNumber(formData.phone)),
+      avatar: isEmpty(formData.avatar) ? true : isValidUrl(formData.avatar),
     };
-
-    console.log(formData.phone)
 
     const errors = Object.entries(validations).filter(([, valid]) => !valid);
 
@@ -109,6 +109,7 @@ const RegisterForm = () => {
         password:
           "Your password must be a combination of letters, numbers, and special characters with minimum 8 characters",
         phone: "Please enter a valid phone number before proceeding",
+        avatar: "Please enter a valid avatar URL before proceeding",
       };
 
       showToast(messages[field]);

@@ -9,7 +9,7 @@ export const isEmpty = (value) => {
 
 export const isValidPassword = (password) => {
   const pattern =
-    /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[a-zA-Z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/
+    /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[a-zA-Z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/;
   return pattern.test(password);
 };
 
@@ -25,4 +25,10 @@ export const isPinComplete = (pin) => {
 export const isPinNumberOnly = (pin) => {
   const pattern = /^\d{6}$/;
   return pattern.test(pin);
+};
+
+export const isValidUrl = (url) => {
+  const pattern =
+    /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(\/[a-zA-Z0-9#]+\/?)*$/;
+  return pattern.test(url);
 };
