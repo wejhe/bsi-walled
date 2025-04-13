@@ -142,7 +142,16 @@ const TransferForm = () => {
   };
 
   const handleTransferClick = () => {
-    if (balance < formData.amount) {
+    if (formData.recipientWalletId == userWalletId) {
+      Swal.fire({
+        toast: true,
+        position: "bottom-start",
+        icon: "warning",
+        title: "You can't transfer to yourself!",
+        showConfirmButton: false,
+        timer: 3000,
+      });
+    } else if (balance < formData.amount) {
       Swal.fire({
         toast: true,
         position: "bottom-start",
