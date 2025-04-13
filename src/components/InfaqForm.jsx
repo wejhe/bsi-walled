@@ -218,7 +218,7 @@ const InfaqForm = () => {
           <div className="customAmountGroup">
             <InputCurrency
               value={formData.amount}
-              name="infaq"
+              name="amount"
               placeholder="Infaq Amount"
               width="100%"
               onChange={handleChange}
