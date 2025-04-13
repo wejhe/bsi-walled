@@ -120,6 +120,15 @@ const InfaqForm = () => {
         showConfirmButton: false,
         timer: 3000,
       });
+    } else if (formData.amount == 0) {
+      Swal.fire({
+        toast: true,
+        position: "bottom-start",
+        icon: "warning",
+        title: "Transaction amount should be more than Rp0",
+        showConfirmButton: false,
+        timer: 3000,
+      });
     } else {
       Swal.fire({
         title: "Confirmation",

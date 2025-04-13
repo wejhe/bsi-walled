@@ -160,12 +160,12 @@ const TransferForm = () => {
         showConfirmButton: false,
         timer: 3000,
       });
-    } else if (formData.amount == 0) {
+    } else if (formData.amount < 10000) {
       Swal.fire({
         toast: true,
         position: "bottom-start",
         icon: "warning",
-        title: "Transaction amount should be more than 0",
+        title: "The minimum transaction amount allowed is Rp10.000",
         showConfirmButton: false,
         timer: 3000,
       });
