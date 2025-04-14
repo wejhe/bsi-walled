@@ -1,5 +1,5 @@
 const apiconfig = {
-  BASE_URL: "http://localhost:8080",
+  BASE_URL: "https://walled-api-latest.onrender.com",
 };
 
 export default apiconfig;
