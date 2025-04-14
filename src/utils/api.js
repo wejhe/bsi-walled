@@ -2,7 +2,7 @@ import axios from "axios";
 import useAuthStore from "../stores/authStore";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: "https://walled-api-latest.onrender.com",
 });
 
 let isRefreshing = false;
@@ -63,7 +63,7 @@ api.interceptors.response.use(
 
       try {
         const response = await axios.post(
-          `http://localhost:8080/auth/refresh?refreshToken=${refreshToken}`
+          `https://walled-api-latest.onrender.com/auth/refresh?refreshToken=${refreshToken}`
         );
 
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data.data;
