@@ -28,7 +28,10 @@ export const isPinNumberOnly = (pin) => {
 };
 
 export const isValidUrl = (url) => {
-  const pattern =
-    /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(\/[a-zA-Z0-9#]+\/?)*$/;
-  return pattern.test(url);
+  try {
+    new URL(url);
+    return true;
+  } catch (_) {
+    return false;
+  }
 };
