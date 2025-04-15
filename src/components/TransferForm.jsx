@@ -25,9 +25,6 @@ const TransferForm = () => {
   const pinInputValueRef = useRef("");
   const pinIsEmptyRef = useRef(true);
   const pinIsCompleteRef = useRef(false);
-  // const [pinInputValue, setPinInputValue] = useState("");
-  // const [pinIsEmpty, setPinIsEmpty] = useState(true);
-  // const [pinIsComplete, setPinIsComplete] = useState(false);
 
   const [formData, setFormData] = useState({
     recipientWalletId: "",
@@ -45,7 +42,6 @@ const TransferForm = () => {
       try {
         const response = await api.get("api/users");
         setDataRecipient(response.data.data);
-        // console.log("INI RESPONS", response.data.data);
       } catch (error) {
         console.error("Gagal fetch users", error);
       }
@@ -158,10 +154,8 @@ const TransferForm = () => {
           navigate("/infaq");
         }
       });
-      // console.log("Infaq berhasil", response.data);
     } catch (error) {
       showToast("Transfer failed", error.message);
-      // console.log(formData);
     }
   };
 
@@ -256,13 +250,13 @@ const TransferForm = () => {
           try {
             const result = await verifyPIN(pinInputValueRef.current);
             if (result.responseCode === 200) {
-              // console.log("input formData");
               return true;
             } else {
               showToast("Incorrect PIN, please try again");
               return false;
             }
           } catch (error) {
+            console.error(error);
             showToast("Incorrect PIN, please try again");
             return false;
           }
@@ -274,16 +268,6 @@ const TransferForm = () => {
       });
     }
   };
-
-  // const handleRecipientChange = (e) => {
-  //   setRecipient(e.target.selectedOptions[0].label);
-  // };
-
-  // const handleInputChange = (value) => {
-  //   setTransferAmount(value);
-  // };
-
-  // console.log("dataRecipient", dataRecipient);
 
   return (
     <>

@@ -8,7 +8,6 @@ import Swal from "sweetalert2";
 import PinField from "react-pin-field";
 import {
   useState,
-  // useEffect,
   useRef,
 } from "react";
 import { isEmpty, isPinComplete } from "../utils/validation";
@@ -29,18 +28,8 @@ const TopupForm = () => {
     pinInputValueRef.current = value;
     pinIsEmptyRef.current = isEmpty(value);
     pinIsCompleteRef.current = isPinComplete(value);
-
-    console.log(
-      "PIN Changed:",
-      value,
-      "Empty:",
-      pinIsEmptyRef.current,
-      "Complete:",
-      pinIsCompleteRef.current
-    );
   };
 
-  // FORM DATA Dhito testing value
   const [formData, setFormData] = useState({
     source: "BSI",
     amount: "",
@@ -128,7 +117,6 @@ const TopupForm = () => {
           try {
             const result = await verifyPIN(pinInputValueRef.current);
             if (result.responseCode === 200) {
-              console.log("input formData");
               return true;
             } else {
               showToast("Incorrect PIN, please try again");
@@ -136,6 +124,7 @@ const TopupForm = () => {
             }
           } catch (error) {
             showToast("Incorrect PIN, please try again");
+            console.error(error);
             return false;
           }
         },
@@ -194,7 +183,6 @@ const TopupForm = () => {
           navigate("/infaq");
         }
       });
-      console.log("Top up berhasil", response.data);
     } catch (error) {
       showToast("Top up failed", error.message);
     }

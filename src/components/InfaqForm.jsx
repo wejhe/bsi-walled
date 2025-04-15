@@ -2,7 +2,7 @@ import PrimaryButton from "../components/PrimaryButton";
 import ReactDOM from "react-dom/client";
 import Swal from "sweetalert2";
 import PinField from "react-pin-field";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { isEmpty, isPinComplete } from "../utils/validation";
 import InputCurrency from "./InputCurrency";
 import { formatCurrency } from "../utils/formatter";
@@ -98,15 +98,8 @@ const InfaqForm = () => {
             navigate("/dashboard");
           }
         });
-      console.log("Infaq berhasil", response.data);
     } catch (error) {
       showToast("Infaq failed", error.message);
-      console.log(formData);
-
-      // console.log("ini AMOUNT INFAQ",formData.amount);
-      // console.log("RECIPIENT WALLET", formData.recipientWalletId);
-      // console.log("DESCRIPTION", formData.description);
-      // console.log("IS SEDEKAH", formData.isSedekah);
     }
   };
 
@@ -183,7 +176,6 @@ const InfaqForm = () => {
           try {
             const result = await verifyPIN(pinInputValueRef.current);
             if (result.responseCode === 200) {
-              console.log("input formData");
               return true;
             } else {
               showToast("Incorrect PIN, please try again");
@@ -191,6 +183,7 @@ const InfaqForm = () => {
             }
           } catch (error) {
             showToast("Incorrect PIN, please try again");
+            console.error(error);
             return false;
           }
         },
