@@ -102,7 +102,7 @@ export const promptCreatePIN = () => {
         Swal.fire({
           icon: "info",
           title: "PIN Not Created",
-          text: `Please login when you came back to set your transaction pin`,
+          text: `Your account has been successfully registered. Please login when you came back to set your transaction pin!`,
           confirmButtonText: "UNDERSTOOD",
           customClass: {
             popup: "modalRadius",
