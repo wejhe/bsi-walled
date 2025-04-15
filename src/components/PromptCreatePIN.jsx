@@ -12,7 +12,6 @@ export const promptCreatePIN = () => {
       if (field === "pin") pinValue = value;
       if (field === "confirmPin") confirmPinValue = value;
 
-      // Real-time validation
       const helperElement = document.getElementById("realtimePinHelper");
 
       if (pinValue && confirmPinValue) {

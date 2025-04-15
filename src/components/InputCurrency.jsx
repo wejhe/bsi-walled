@@ -10,16 +10,12 @@ const InputCurrency = ({
   value = "",
   name = "",
 }) => {
-  // const [value, setValue] = useState("");
-
   const handleChange = (e) => {
-    let rawValue = e.target.value.replace(/[^0-9]/g, ""); // hanya angka
-  
-    // Hindari angka yang hanya '0' atau diawali dengan '0'
+    let rawValue = e.target.value.replace(/[^0-9]/g, ""); 
     if (rawValue === "0") {
-      rawValue = ""; // Kosongkan jika hanya '0'
+      rawValue = "";
     } else if (rawValue.length > 1 && rawValue.startsWith("0")) {
-      rawValue = rawValue.replace(/^0+/, ""); // Hapus leading zeros jika lebih dari satu digit
+      rawValue = rawValue.replace(/^0+/, "");
     }
   
     if (onChange) {

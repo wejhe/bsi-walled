@@ -6,7 +6,6 @@ import api from "../utils/api";
 
 const BalInfo = () => {
   const [balance, setBalance] = useState(0);
-  // const accessToken = useAuthStore((state) => state.accessToken);
 
   const formatToRupiah = (amount) => {
     return new Intl.NumberFormat("id-ID", {
