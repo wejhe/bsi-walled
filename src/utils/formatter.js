@@ -18,3 +18,16 @@ export const normalizedPhoneNumber = (phone) => {
 
   return cleaned;
 };
+
+export const convertToUTC7 = (transactions) => {
+  return transactions.map(tx => {
+      const utcDate = new Date(tx.transactionDate);
+
+      const utc7Date = new Date(utcDate.getTime() - 7 * 60 * 60 * 1000);
+      
+      return {
+          ...tx,
+          transactionDate: utc7Date.toISOString()
+      };
+  });
+}

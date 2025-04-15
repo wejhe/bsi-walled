@@ -10,7 +10,7 @@ import isSameOrAfter from "dayjs/plugin/isSameOrAfter";
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import quarterOfYear from "dayjs/plugin/quarterOfYear";
 import useAuthStore from "../stores/authStore";
-import { formatCurrency } from "../utils/formatter";
+import { formatCurrency, convertToUTC7 } from "../utils/formatter";
 
 const TransactionPieChart = () => {
   const [transactionHistory, setTransactionHistory] = useState(null);
@@ -77,7 +77,10 @@ const TransactionPieChart = () => {
     const fetchTransactionHistoryData = async () => {
       try {
         const response = await api.get("/api/transactions/me");
-        setTransactionHistory(response.data.data);
+
+        const utc7transactionHistory = convertToUTC7(response.data.data);
+
+        setTransactionHistory(utc7transactionHistory);
       } catch (error) {
         console.error("Error:", error);
       }
@@ -196,7 +199,7 @@ const TransactionPieChart = () => {
     });
 
     setLast3TransactionHistory(mappedData.slice(0, 3));
-  }, [transactionHistory, filter]);
+  }, [transactionHistory, filter, allUsersData]);
 
   return (
     <>

@@ -3,7 +3,7 @@ import InputField from "../components/InputField";
 import { useState, useEffect } from "react";
 import api from "../utils/api";
 import useAuthStore from "../stores/authStore";
-import { formatCurrency } from "../utils/formatter";
+import { formatCurrency, convertToUTC7 } from "../utils/formatter";
 
 const TransactionTable = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -33,9 +33,9 @@ const TransactionTable = () => {
       try {
         const response = await api.get("/api/transactions/me");
 
-        console.log(response.data.data);
+        const utc7transactionHistory = convertToUTC7(response.data.data);
 
-        const sortedData = [...response.data.data].sort(
+        const sortedData = [...utc7transactionHistory].sort(
           (a, b) =>
             new Date(b.transactionDate).getTime() -
             new Date(a.transactionDate).getTime()

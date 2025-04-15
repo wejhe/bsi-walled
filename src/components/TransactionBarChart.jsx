@@ -3,6 +3,7 @@ import { BarChart } from "@mui/x-charts/BarChart";
 import { useState, useEffect } from "react";
 import api from "../utils/api";
 import useAuthStore from "../stores/authStore";
+import { convertToUTC7 } from "../utils/formatter";
 
 const TransactionBarChart = () => {
   const [transactionHistory, setTransactionHistory] = useState([]);
@@ -17,7 +18,10 @@ const TransactionBarChart = () => {
     const fetchTransactionHistoryData = async () => {
       try {
         const response = await api.get("/api/transactions/me");
-        setTransactionHistory(response.data.data);
+
+        const utc7transactionHistory = convertToUTC7(response.data.data);
+
+        setTransactionHistory(utc7transactionHistory);
       } catch (error) {
         console.error("Error:", error);
       }
