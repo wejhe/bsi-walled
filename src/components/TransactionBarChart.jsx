@@ -28,6 +28,7 @@ const TransactionBarChart = () => {
 
   useEffect(() => {
     if (!Array.isArray(transactionHistory)) return;
+    if (!userData) return;
 
     const userWalletId = userData.wallet.id;
     const now = new Date();
