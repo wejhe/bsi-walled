@@ -3,7 +3,12 @@ import darkmode from "/darkmode.svg";
 import useAuthStore from "../stores/authStore";
 
 const Navbar = () => {
-  const { clearTokens } = useAuthStore();
+  const { clearTokens, clearUserData } = useAuthStore();
+
+  const handleLogout = () => {
+    clearTokens();
+    clearUserData();
+  };
 
   return (
     <>
@@ -22,7 +27,7 @@ const Navbar = () => {
             <a className="navlink" href="/transfer">
               Transfer
             </a>
-            <a className="navlink" onClick={clearTokens} href="/">
+            <a className="navlink" onClick={handleLogout} href="/">
               Sign Out
             </a>
           </div>

@@ -1,9 +1,130 @@
 import DataTable from "react-data-table-component";
 import InputField from "../components/InputField";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import api from "../utils/api";
+import useAuthStore from "../stores/authStore";
+import { formatCurrency, convertToUTC7 } from "../utils/formatter";
 
 const TransactionTable = () => {
   const [searchValue, setSearchValue] = useState("");
+  const [transactionHistory, setTransactionHistory] = useState(null);
+  const [filteredData, setFilteredData] = useState(null);
+  const [allUsersData, setAllUsersData] = useState(null);
+  const { userData } = useAuthStore();
+
+  useEffect(() => {
+    const fetchAllUsersData = async () => {
+      try {
+        const response = await api.get("/api/users");
+
+        setAllUsersData(response.data.data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchAllUsersData();
+  }, []);
+
+  useEffect(() => {
+    if (!allUsersData) return;
+
+    const fetchTransactionHistoryData = async () => {
+      try {
+        const response = await api.get("/api/transactions/me");
+
+        const utc7transactionHistory = convertToUTC7(response.data.data);
+
+        const sortedData = [...utc7transactionHistory].sort(
+          (a, b) =>
+            new Date(b.transactionDate).getTime() -
+            new Date(a.transactionDate).getTime()
+        );
+
+        const mappedData = sortedData.map((item) => {
+          const userWalletId = userData.wallet.id;
+          const dateObj = new Date(item.transactionDate);
+          const datetime = dateObj
+            .toLocaleString("id-ID", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+            })
+            .replace(/\./g, ":")
+            .replace(",", "");
+
+          let fromto = "-";
+          let sign = "+";
+
+          if (item.transactionType === "TRANSFER") {
+            if (item.recipientWalletId === null) {
+              fromto = "BSI LAZIS";
+              sign = "-";
+            } else if (item.recipientWalletId !== userWalletId) {
+              fromto = item.recipientWalletId;
+              sign = "-";
+            } else {
+              fromto = item.walletId;
+              sign = "+";
+            }
+          } else {
+            fromto = "Top-Up Provider";
+          }
+
+          let fromtoName = "-";
+          if (typeof fromto === "number") {
+            const userMatch = allUsersData.find(
+              (entry) => entry.wallet.id === fromto
+            );
+            if (userMatch) {
+              fromtoName = userMatch.user.fullName;
+            }
+          } else {
+            fromtoName = fromto;
+          }
+
+          return {
+            id: item.id,
+            datetime,
+            timestamp: dateObj.getTime(),
+            type: item.transactionType
+              .replace("_", "-")
+              .toLowerCase()
+              .replace(/\b\w/g, (c) => c.toUpperCase()),
+            fromto: fromtoName,
+            description: item.description,
+            amount: `${sign} ${formatCurrency(item.amount.toString())}`,
+          };
+        });
+
+        setTransactionHistory(mappedData);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    fetchTransactionHistoryData();
+  }, [allUsersData]);
+
+  useEffect(() => {
+    if (!transactionHistory) return;
+
+    const filteredData = transactionHistory.filter((item) =>
+      [
+        item.description,
+        item.type,
+        item.fromto,
+        item.amount,
+        item.datetime,
+      ].some((val) =>
+        String(val).toLowerCase().includes(searchValue.toLowerCase())
+      )
+    );
+    setFilteredData(filteredData);
+  }, [transactionHistory, searchValue]);
 
   const handleSearch = (e) => {
     setSearchValue(e.target.value);
@@ -46,6 +167,7 @@ const TransactionTable = () => {
       name: "Date and Time",
       selector: (row) => row.datetime,
       sortable: true,
+      sortFunction: (a, b) => b.timestamp - a.timestamp,
     },
     {
       name: "Transaction Type",
@@ -66,55 +188,6 @@ const TransactionTable = () => {
     },
   ];
 
-  const data = [
-    {
-      id: 1,
-      datetime: "10/11/2023",
-      type: "Top Up",
-      fromto: "Your Account",
-      description: "Anjay",
-      amount: "50.000",
-    },
-    {
-      id: 2,
-      datetime: "11/11/2023",
-      type: "Top Up",
-      fromto: "Your Account",
-      description: "Anjay",
-      amount: "50.000",
-    },
-    {
-      id: 3,
-      datetime: "12/11/2023",
-      type: "Transfer",
-      fromto: "100",
-      description: "Anjay",
-      amount: "100",
-    },
-    {
-      id: 4,
-      datetime: "13/11/2023",
-      type: "Transfer",
-      fromto: "100",
-      description: "Anjay",
-      amount: "100",
-    },
-    {
-      id: 5,
-      datetime: "14/11/2023",
-      type: "Transfer",
-      fromto: "100",
-      description: "Anjay",
-      amount: "100",
-    },
-  ];
-
-  const filteredData = data.filter((item) =>
-    [item.description, item.type, item.fromto, item.amount, item.datetime].some(
-      (val) => val.toLowerCase().includes(searchValue.toLowerCase())
-    )
-  );
-
   return (
     <div className="tableContainer">
       <InputField
@@ -129,7 +202,7 @@ const TransactionTable = () => {
       <DataTable
         pagination
         columns={columns}
-        data={filteredData}
+        data={filteredData || []}
         customStyles={customStyles}
       />
     </div>

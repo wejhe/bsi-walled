@@ -7,12 +7,14 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import apiconfig from "../utils/apiconfig";
+import { normalizedPhoneNumber } from "../utils/formatter";
 
 import {
   isValidEmail,
   isEmpty,
   isValidPassword,
   isValidPhone,
+  isValidUrl,
 } from "../utils/validation";
 
 const RegisterForm = () => {
@@ -32,7 +34,7 @@ const RegisterForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value.toString() }));
   };
 
   const handlePasswordVisibility = () => {
@@ -74,10 +76,16 @@ const RegisterForm = () => {
           Swal.fire({
             icon: "success",
             title: "Register Success",
-            text: `Your account has been created!`,
+            text: `Your walled account has been created! Please login to access your walled!`,
+            confirmButtonText: "UNDERSTOOD",
+            customClass: {
+              popup: "modalRadius",
+              confirmButton: "modalButton",
+              cancelButton: "modalButtonSecondary",
+            },
           });
 
-          navigate("/dashboard");
+          navigate("/login");
         })
         .catch((error) => {
           console.error("Error: ", error);
@@ -90,11 +98,11 @@ const RegisterForm = () => {
       complete:
         !isEmpty(formData.name) &&
         !isEmpty(formData.email) &&
-        !isEmpty(formData.password) &&
-        !isEmpty(formData.avatar),
+        !isEmpty(formData.password),
       email: isValidEmail(formData.email),
       password: isValidPassword(formData.password),
-      phone: isValidPhone(formData.phone),
+      phone: isValidPhone(normalizedPhoneNumber(formData.phone)),
+      avatar: isEmpty(formData.avatar) ? true : isValidUrl(formData.avatar),
     };
 
     const errors = Object.entries(validations).filter(([, valid]) => !valid);
@@ -105,8 +113,9 @@ const RegisterForm = () => {
         complete: "Please fill out all of the field before proceeding",
         email: "Please enter a valid email address before proceeding",
         password:
-          "Your password must be a combination of letters and numbers with minimum 8 characters",
+          "Your password must be a combination of letters, numbers, and special characters with minimum 8 characters",
         phone: "Please enter a valid phone number before proceeding",
+        avatar: "Please enter a valid avatar URL before proceeding",
       };
 
       showToast(messages[field]);
@@ -130,6 +139,7 @@ const RegisterForm = () => {
         fullName: formData.name,
         password: formData.password,
         phoneNumber: formData.phone,
+        avatarUrl: formData.avatar,
       }),
     })
       .then((response) => {
@@ -151,12 +161,14 @@ const RegisterForm = () => {
             })
             .then((data) => {
               if (data.responseCode === 201) {
-                handleSetPin(accessToken)
+                handleSetPin(accessToken);
               }
             })
             .catch((error) => {
               console.error("Error: ", error);
             });
+        } else if (data.responseCode === 400) {
+          showToast("Email or phone number you registered is already exist");
         }
       })
       .catch((error) => {

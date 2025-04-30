@@ -1,6 +1,6 @@
 import DataTable from "react-data-table-component";
 
-const RecentTransaction = () => {
+const RecentTransaction = ({data}) => {
   const customStyles = {
     headCells: {
       style: {
@@ -24,11 +24,11 @@ const RecentTransaction = () => {
     {
       name: "Time",
       selector: (row) => row.datetime,
-      sortable: true,
     },
     {
       name: "Type",
       selector: (row) => row.type,
+      width: "100px",
     },
     {
       name: "From / To",
@@ -41,34 +41,6 @@ const RecentTransaction = () => {
     {
       name: "Amount",
       selector: (row) => row.amount,
-      sortable: true,
-    },
-  ];
-
-  const data = [
-    {
-      id: 1,
-      datetime: "Beetlejuice",
-      type: "1988",
-      fromto: "100",
-      description: "Anjay",
-      amount: "100",
-    },
-    {
-      id: 2,
-      datetime: "Beetlejuice",
-      type: "1988",
-      fromto: "100",
-      description: "Anjay",
-      amount: "100",
-    },
-    {
-      id: 3,
-      datetime: "Beetlejuice",
-      type: "1988",
-      fromto: "100",
-      description: "Anjay",
-      amount: "100",
     },
   ];
 
@@ -77,7 +49,7 @@ const RecentTransaction = () => {
       <p className="miniTableTitle">Recent Transaction</p>
       <DataTable
         columns={columns}
-        data={data}
+        data={data? data : []}
         customStyles={customStyles}
       />
     </div>

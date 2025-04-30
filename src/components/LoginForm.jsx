@@ -3,17 +3,17 @@ import PrimaryButton from "./PrimaryButton";
 import logo from "/logo.svg";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { isValidEmail, isEmpty, isValidPassword } from "../utils/validation";
+import { isValidEmail } from "../utils/validation";
 import InputFieldPassword from "./InputFieldPassword";
 import Swal from "sweetalert2";
 import apiconfig from "../utils/apiconfig";
 import useAuthStore from "../stores/authStore";
-import promptCreatePIN from "./PromptCreatePIN";
+import api from "../utils/api";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const { setTokens } = useAuthStore();
+  const { setTokens, setUserData } = useAuthStore();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -55,6 +55,17 @@ const LoginForm = () => {
     });
   };
 
+  const handleUserData = async () => {
+    try {
+      const response = await api.get("/api/users/me");
+      if (setUserData(response.data.data)) {
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   const handleLogin = async () => {
     if (isAnyEmpty()) {
       showToast("Please fill out all of the field before proceeding");
@@ -77,9 +88,9 @@ const LoginForm = () => {
         })
         .then((data) => {
           if (data.responseCode === 200) {
-            const {accessToken, refreshToken} = data.data;
-            setTokens({accessToken, refreshToken});
-            navigate("/dashboard");
+            const { accessToken, refreshToken } = data.data;
+            setTokens({ accessToken, refreshToken });
+            handleUserData();
           } else if (data.responseCode === 401) {
             showToast("The email and password you entered is incorrect");
           } else {

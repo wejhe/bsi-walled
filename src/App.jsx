@@ -12,6 +12,8 @@ import TransactionHistoryPage from "./pages/TransactionHistoryPage";
 import useAuthStore from "./stores/authStore";
 import apiconfig from "./utils/apiconfig";
 import PromptCreatePIN from "./components/PromptCreatePIN";
+import api from "./utils/api";
+import Swal from "sweetalert2";
 
 function App() {
   const location = useLocation();
@@ -59,6 +61,20 @@ function App() {
     }
   };
 
+  const checkHasPin = async () => {
+    try {
+      const response = await api.post("/api/users/has-pin");
+  
+      const hasPin = response.data.data;
+  
+      if (!hasPin) {
+        handleSetPin();
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
   if (!isLogin && !isAuthPage) {
     return <Navigate to="/" />;
   } else if (isLogin && isAuthPage) {
@@ -66,26 +82,7 @@ function App() {
   }
 
   if (!isAuthPage) {
-    const endpoint = `${apiconfig.BASE_URL}/api/users/has-pin`;
-    fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        const hasPin = data.data;
-        if (!hasPin) {
-          handleSetPin();
-        }
-      })
-      .catch((error) => {
-        console.error("Error: ", error);
-      });
+    checkHasPin();
   }
 
   return (

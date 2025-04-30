@@ -8,13 +8,30 @@ const InputCurrency = ({
   bgColor = "#fafbfd",
   strokeColor = "transparent",
   value = "",
+  name = "",
 }) => {
   // const [value, setValue] = useState("");
 
   const handleChange = (e) => {
-    const rawValue = e.target.value.replace(/[^0-9]/g, ""); // hanya angka
-    if (onChange) onChange(rawValue);
+    let rawValue = e.target.value.replace(/[^0-9]/g, ""); // hanya angka
+  
+    // Hindari angka yang hanya '0' atau diawali dengan '0'
+    if (rawValue === "0") {
+      rawValue = ""; // Kosongkan jika hanya '0'
+    } else if (rawValue.length > 1 && rawValue.startsWith("0")) {
+      rawValue = rawValue.replace(/^0+/, ""); // Hapus leading zeros jika lebih dari satu digit
+    }
+  
+    if (onChange) {
+      onChange({
+        target: {
+          name: name,
+          value: rawValue,
+        },
+      });
+    }
   };
+  
 
   const formattedValue = formatCurrency(value);
 
@@ -34,6 +51,7 @@ const InputCurrency = ({
           placeholder={placeholder}
           value={formattedValue}
           onChange={handleChange}
+          name={name}
         />
         <button className="wCurrencyIcon">Rp</button>
       </div>
